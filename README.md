@@ -200,6 +200,20 @@ Removing nest-orm-api-main_app-db_1  ... done
 Removing nest-orm-api-main_app-api_1 ... done
 Removing network nest-orm-api-main_default
 admin@gw-mac nest-orm-api-main % 
+admin@gw-mac nest-orm-api-main % docker image ls
+REPOSITORY                  TAG       IMAGE ID       CREATED       SIZE
+nest-orm-api-main_app-api   latest    c9f02abc054b   3 hours ago   821MB
+postgres                    latest    da2cb49d7a8d   9 days ago    374MB
+admin@gw-mac nest-orm-api-main % 
+admin@gw-mac nest-orm-api-main % docker volume ls
+DRIVER    VOLUME NAME
+local     nest-orm-api-main_postgres_data
+admin@gw-mac nest-orm-api-main % 
+admin@gw-mac nest-orm-api-main % docker image rm c9f02abc054b da2cb49d7a8d
+admin@gw-mac nest-orm-api-main % 
+admin@gw-mac nest-orm-api-main % docker volume rm nest-orm-api-main_postgres_data
+nest-orm-api-main_postgres_data
+admin@gw-mac nest-orm-api-main % 
 ```
 
 

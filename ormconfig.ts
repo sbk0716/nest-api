@@ -2,18 +2,12 @@ const dbHostName = process.env.POSTGRES_HOST || 'app-db';
 const dbPort = process.env.POSTGRES_PORT || 5432;
 const dbUserName = process.env.POSTGRES_USER || 'admin';
 const dbPassword = process.env.POSTGRES_PASSWORD || 'dummypassword';
-const tsOrJs = process.env.TS_OR_JS || 'ts';
-console.info('####################')
-console.info(`tsOrJs=${tsOrJs}`)
-console.info('####################')
-const entities = (tsOrJs === 'ts') ? 'src/**/*.entity.ts' : 'dist/**/*.entity{.ts,.js,.js.map}';
-const migrations = (tsOrJs === 'ts') ? 'src/migrations/*{.ts,.js}' : 'dist/src/migrations/*{.ts,.js,.js.map}';
-const migrationsDir = (tsOrJs === 'ts') ? 'src/migrations' : 'dist/src/migrations';
-
 let dbName = process.env.DB_NAME || 'coredb';
-
+let entities = 'dist/**/*.entity{.ts,.js,.js.map}';
+let migrations = 'dist/src/migrations/*{.ts,.js,.js.map}';
 if (process.env.MODE === 'TEST') {
-  dbName = 'testdb'
+  dbName = 'testdb';
+  entities = 'src/**/*.entity.ts';
 }
 
 const connectionOptions = {
@@ -26,13 +20,9 @@ const connectionOptions = {
   synchronize: false,
   entities: [entities],
   migrations: [migrations],
-  cli: {
-    migrationsDir: migrationsDir,
-  },
 };
 
-console.info('####################')
-console.info(connectionOptions)
-console.info('####################')
-
+// console.info('####################');
+// console.info(connectionOptions);
+// console.info('####################');
 module.exports = connectionOptions;

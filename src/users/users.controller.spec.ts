@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { ReportService } from '../report/report.service';
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
@@ -11,7 +10,6 @@ import {
   InsertResult,
   UpdateResult,
 } from 'typeorm';
-import { ReportModule } from '../report/report.module';
 import { CreateUserDto } from './dto/create-user.dto';
 import anything = jasmine.anything;
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -27,7 +25,6 @@ describe('UsersController', () => {
       imports: [
         TypeOrmModule.forRoot(connectionOptions),
         TypeOrmModule.forFeature([User]),
-        ReportModule,
       ],
       controllers: [UsersController],
       providers: [UsersService],
@@ -48,7 +45,6 @@ describe('UsersController', () => {
   test('userService should be defined', () => {
     expect(userService).toBeDefined();
   });
-
 
   describe('【Method】create', () => {
     describe('create successful', () => {
