@@ -15,14 +15,10 @@ import { ReportModule } from '../report/report.module';
 import { CreateUserDto } from './dto/create-user.dto';
 import anything = jasmine.anything;
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ExportUserReportDto } from './dto/export-user-report.dto';
-import { FileFormat } from '../report/report.type';
-import { ManagedUpload } from 'aws-sdk/clients/s3';
 
 describe('UsersController', () => {
   let userController: UsersController;
   let userService: UsersService;
-  let reportService: ReportService;
   let module: TestingModule;
 
   beforeAll(async () => {
@@ -39,7 +35,6 @@ describe('UsersController', () => {
 
     userController = module.get<UsersController>(UsersController);
     userService = module.get<UsersService>(UsersService);
-    reportService = module.get<ReportService>(ReportService);
   });
 
   afterAll(() => {
@@ -54,9 +49,6 @@ describe('UsersController', () => {
     expect(userService).toBeDefined();
   });
 
-  test('reportService should be defined', () => {
-    expect(reportService).toBeDefined();
-  });
 
   describe('【Method】create', () => {
     describe('create successful', () => {
@@ -283,74 +275,6 @@ describe('UsersController', () => {
 
       test('UserService.remove should be called with id number', () => {
         expect(removeUserSpy).toBeCalledWith(1);
-      });
-    });
-  });
-
-  describe('【Method】exportReport', () => {
-    describe('export pdf successful', () => {
-      let findOneUserSpy: jest.SpyInstance;
-      let exportSpy: jest.SpyInstance;
-      let result: string;
-
-      beforeAll(async () => {
-        findOneUserSpy = jest.spyOn(userService, 'findOne').mockResolvedValue(
-          plainToClass(User, {
-            id: 1,
-            firstName: 'firstName',
-            lastName: 'lastName',
-            firstNameKana: 'firstNameKana',
-            lastNameKana: 'lastNameKana',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          }),
-        );
-
-        exportSpy = jest.spyOn(reportService, 'export').mockResolvedValue({
-          Location: 'https://url.com/file.pdf',
-          ETag: 'Etag',
-          Bucket: 'bucket_name',
-          Key: 'Key',
-        } as ManagedUpload.SendData);
-
-        result = await userController.exportReport(
-          1,
-          plainToClass(ExportUserReportDto, {
-            template: 1,
-            format: FileFormat.Pdf,
-          }),
-        );
-      });
-
-      afterAll(() => {
-        findOneUserSpy?.mockRestore();
-        exportSpy?.mockRestore();
-      });
-
-      test('result should be url string', () => {
-        expect(result).toBe('https://url.com/file.pdf');
-      });
-
-      test('UserService.findOne should be called with param id', () => {
-        expect(findOneUserSpy).toHaveBeenCalledWith(1);
-      });
-
-      test('ReportService.export should be called with ExportUserReportDto and User data', () => {
-        expect(exportSpy).toHaveBeenCalledWith(
-          plainToClass(ExportUserReportDto, {
-            template: 1,
-            format: FileFormat.Pdf,
-            data: {
-              id: 1,
-              firstName: 'firstName',
-              lastName: 'lastName',
-              firstNameKana: 'firstNameKana',
-              lastNameKana: 'lastNameKana',
-              createdAt: anything(),
-              updatedAt: anything(),
-            },
-          }),
-        );
       });
     });
   });

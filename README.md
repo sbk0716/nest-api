@@ -255,142 +255,139 @@ admin@gw-mac nest-orm-api-main % curl -X POST 'localhost:3000/api/users' \
 admin@gw-mac nest-orm-api-main % 
 ```
 
-
 # 5. Lint and Format
-## (1)poetry run flake8
+## (1)yarn lint
 ```sh
-admin@gw-mac pg-todoist % docker-compose exec app-api /bin/bash
-root@aef0a7ee5af8:/src# 
-root@aef0a7ee5af8:/src# poetry run flake8 api db tests
-db/client.py:38:11: F541 f-string is missing placeholders
-root@aef0a7ee5af8:/src# 
+admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
+root@d1569df7ec85:/usr/src/app# 
+root@d1569df7ec85:/usr/src/app# yarn lint
+yarn run v1.22.17$ eslint "{src,apps,libs,test}/**/*.ts" --fix
+Done in 20.75s.
+root@d1569df7ec85:/usr/src/app# 
 ```
 
-## (2)poetry run black
+## (2)yarn format
 ```sh
-admin@gw-mac pg-todoist % docker-compose exec app-api /bin/bash
-root@aef0a7ee5af8:/src# 
-root@aef0a7ee5af8:/src# poetry run black api db tests
-All done! ✨ 🍰 ✨
-32 files left unchanged.
-root@aef0a7ee5af8:/src# 
+admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
+root@d1569df7ec85:/usr/src/app# 
+root@d1569df7ec85:/usr/src/app# yarn format
+yarn run v1.22.17
+$ prettier --write "src/**/*.ts" "test/**/*.ts"
+src/app.module.ts 182ms
+src/configs/aws.config.ts 6ms
+src/dynamo-db/dto/create-dynamo-db-item.dto.ts 4ms
+src/dynamo-db/dto/get-dynamo-db-item.dto.ts 5ms
+src/dynamo-db/dynamo-db.module.ts 4ms
+src/dynamo-db/dynamo-db.service.spec.ts 8ms
+src/dynamo-db/dynamo-db.service.ts 12ms
+src/main.ts 13ms
+src/migrations/1644047378747-CreateUserTable.ts 6ms
+src/order/dto/create-order.dto.ts 5ms
+src/order/order.controller.spec.ts 9ms
+src/order/order.controller.ts 7ms
+src/order/order.d.ts 3ms
+src/order/order.module.ts 3ms
+src/order/order.service.spec.ts 5ms
+src/order/order.service.ts 13ms
+src/report/dto/export-report.dto.ts 3ms
+src/report/report.controller.spec.ts 4ms
+src/report/report.controller.ts 5ms
+src/report/report.module.ts 3ms
+src/report/report.service.spec.ts 4ms
+src/report/report.service.ts 23ms
+src/report/report.type.ts 3ms
+src/s3-file/s3-file.interface.ts 4ms
+src/s3-file/s3-file.module.ts 2ms
+src/s3-file/s3-file.service.spec.ts 5ms
+src/s3-file/s3-file.service.ts 8ms
+src/sqs/dto/send-message.dto.ts 3ms
+src/sqs/sqs.module.ts 2ms
+src/sqs/sqs.service.spec.ts 4ms
+src/sqs/sqs.service.ts 3ms
+src/status/status.controller.spec.ts 4ms
+src/status/status.controller.ts 3ms
+src/status/status.module.ts 2ms
+src/users/dto/create-user.dto.ts 2ms
+src/users/dto/export-user-report.dto.ts 2ms
+src/users/dto/update-user.dto.ts 2ms
+src/users/entities/user.entity.ts 3ms
+src/users/users.controller.spec.ts 46ms
+src/users/users.controller.ts 8ms
+src/users/users.module.ts 3ms
+src/users/users.service.spec.ts 46ms
+src/users/users.service.ts 7ms
+src/users/users.testdata.ts 1ms
+test/app.e2e-spec.ts 4ms
+test/modules/test-manager.ts 8ms
+test/users.e2e-spec.ts 31ms
+Done in 1.69s.
+root@d1569df7ec85:/usr/src/app# 
 ```
 
 
 # 5. Test
-## (1)set up postgresql
+
+## (1)migratation for test db
 ```sh
-admin@gw-mac pg-todoist % docker-compose exec app-api /bin/bash
-root@c6ea00e01944:/src# python db/pg_client.py
-==================================================
-1. SELECT datname, datdba, encoding, datcollate, datctype from pg_database
-==================================================
-(datname, datdba, encoding, datcollate, datctype)
---------------------------------------------------
-('postgres', 10, 6, 'C', 'C')
-('coredb', 10, 6, 'C', 'C')
-('template1', 10, 6, 'C', 'C')
-('template0', 10, 6, 'C', 'C')
-('testdb', 10, 6, 'C', 'C')
-==================================================
-==================================================
-2. SELECT usename, usesysid, usecreatedb, usesuper, passwd FROM pg_user
-==================================================
-(usename, usesysid, usecreatedb, usesuper, passwd)
---------------------------------------------------
-('admin', 10, True, True, '********')
-('root', 16394, False, True, '********')
-==================================================
-root@c6ea00e01944:/src# 
+root@d1569df7ec85:/usr/src/app# yarn run migrate:run:test
+yarn run v1.22.17
+$ yarn typeorm:test migration:run
+$ MODE=TEST yarn typeorm migration:run
+$ ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:run
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = current_schema() AND "table_name" = 'migrations'
+query: SELECT * FROM "migrations" "migrations"  ORDER BY "id" DESC
+1 migrations are already loaded in the database.
+1 migrations were found in the source code.
+CreateTableUsers1614142231288 is the last executed migration. It was executed on Wed Feb 24 2021 13:50:31 GMT+0900 (Japan Standard Time).
+1 migrations are new migrations that needs to be executed.
+query: START TRANSACTION
+query: CREATE TABLE "public"."user" ("id" SERIAL NOT NULL, "firstName" character varying NOT NULL, "lastName" character varying NOT NULL, "firstNameKana" character varying NOT NULL, "lastNameKana" character varying NOT NULL, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_03b91d2b8321aa7ba32257dc321" PRIMARY KEY ("id"))
+query: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1644047378747,"CreateUserTable1644047378747"]
+Migration CreateUserTable1644047378747 has been executed successfully.
+query: COMMIT
+Done in 8.44s.
+root@d1569df7ec85:/usr/src/app# 
+root@d1569df7ec85:/usr/src/app# yarn run migrate:show:test
+yarn run v1.22.17
+$ yarn typeorm:test migration:show
+$ MODE=TEST yarn typeorm migration:show
+$ ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:show
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = current_schema() AND "table_name" = 'migrations'
+query: SELECT * FROM "migrations" "migrations"  ORDER BY "id" DESC
+ [X] CreateUserTable1644047378747
+Done in 8.12s.
+root@d1569df7ec85:/usr/src/app# 
 ```
 
-## (2)migratation for test db
+
+## (2)yarn test
 ```sh
-admin@gw-mac pg-todoist % docker-compose exec app-api /bin/bash
-root@c6ea00e01944:/src# export ENV=test
-root@c6ea00e01944:/src# printenv | grep ENV
-ENV=test
-root@c6ea00e01944:/src# poetry run alembic current
-POSTGRES_DB: testdb
-execute run_migrations_online
-INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
-INFO  [alembic.runtime.migration] Will assume transactional DDL.
-root@c6ea00e01944:/src# 
-root@c6ea00e01944:/src# poetry run alembic upgrade head
-POSTGRES_DB: testdb
-execute run_migrations_online
-INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
-INFO  [alembic.runtime.migration] Will assume transactional DDL.
-INFO  [alembic.runtime.migration] Running upgrade  -> e5cc805f99e4, 1_create_tasks_and_dones_table
-INFO  [alembic.runtime.migration] Running upgrade e5cc805f99e4 -> b430a6422cda, 2_add_status_type_column
-root@c6ea00e01944:/src# 
-root@c6ea00e01944:/src# poetry run alembic current
-POSTGRES_DB: testdb
-execute run_migrations_online
-INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
-INFO  [alembic.runtime.migration] Will assume transactional DDL.
-b430a6422cda (head)
-root@c6ea00e01944:/src# 
-```
+root@d1569df7ec85:/usr/src/app# yarn test
+yarn run v1.22.17
+$ MODE=TEST jest --detectOpenHandles
+ PASS  src/users/users.service.spec.ts (9.242 s)
+ PASS  src/users/users.controller.spec.ts (5.676 s)
+ PASS  src/status/status.controller.spec.ts
 
-## (3)poetry run pytest
-```sh
-root@c6ea00e01944:/src# poetry run pytest -v --cov=.
-========================================== test session starts ==========================================
-platform linux -- Python 3.9.9, pytest-6.2.5, py-1.11.0, pluggy-1.0.0 -- /src/.venv/bin/python
-cachedir: .pytest_cache
-rootdir: /src, configfile: pyproject.toml, testpaths: tests
-plugins: anyio-3.4.0, asyncio-0.16.0, cov-3.0.0
-collected 6 items                                                                                       
+Test Suites: 3 passed, 3 total
+Tests:       34 passed, 34 total
+Snapshots:   0 total
+Time:        16.321 s
+Ran all test suites.
+Done in 20.39s.
+root@d1569df7ec85:/usr/src/app# 
+root@d1569df7ec85:/usr/src/app# yarn test:e2e
+yarn run v1.22.17
+$ yarn test --config ./test/jest-e2e.json
+$ MODE=TEST jest --detectOpenHandles --config ./test/jest-e2e.json
+ PASS  test/users.e2e-spec.ts (19.476 s)
+ PASS  test/app.e2e-spec.ts (6.869 s)
 
-tests/test_dones.py::TestCrudDones::test_done_flag PASSED                                         [ 16%]
-tests/test_health.py::TestHealth::test_health_check PASSED                                        [ 33%]
-tests/test_tasks.py::TestCrudTasks::test_create_task_and_read_task PASSED                         [ 50%]
-tests/test_tasks.py::TestCrudTasks::test_create_task_and_update_task PASSED                       [ 66%]
-tests/test_tasks.py::TestCrudTasks::test_create_task_and_delete_task PASSED                       [ 83%]
-tests/test_tasks.py::TestCrudTasks::test_create_all_task_and_read_all_task PASSED                 [100%]
-
------------ coverage: platform linux, python 3.9.9-final-0 -----------
-Name                                         Stmts   Miss  Cover
-----------------------------------------------------------------
-api/__init__.py                                  0      0   100%
-api/core/__init__.py                             0      0   100%
-api/core/environ.py                             18      1    94%
-api/core/logging.py                              3      0   100%
-api/dependencies/__init__.py                     0      0   100%
-api/dependencies/db.py                          12      0   100%
-api/domain/__init__.py                           0      0   100%
-api/domain/models/__init__.py                    0      0   100%
-api/domain/models/task.py                       23      0   100%
-api/infra/__init__.py                            0      0   100%
-api/infra/db/__init__.py                         0      0   100%
-api/infra/db/connection.py                      25     12    52%
-api/infra/routers/__init__.py                    8      0   100%
-api/infra/routers/dones.py                      27      4    85%
-api/infra/routers/health.py                      6      0   100%
-api/infra/routers/tasks.py                      34      4    88%
-api/interfaces/__init__.py                       0      0   100%
-api/interfaces/db/__init__.py                    0      0   100%
-api/interfaces/db/queries/__init__.py            0      0   100%
-api/interfaces/db/queries/dones.py               3      0   100%
-api/interfaces/db/queries/tasks.py               6      0   100%
-api/interfaces/db/repositories/__init__.py       0      0   100%
-api/interfaces/db/repositories/base.py           4      0   100%
-api/interfaces/db/repositories/dones.py         49     15    69%
-api/interfaces/db/repositories/tasks.py        107     35    67%
-api/interfaces/schemas/__init__.py               0      0   100%
-api/interfaces/schemas/done.py                  17      0   100%
-api/interfaces/schemas/task.py                  33      0   100%
-api/main.py                                     15      2    87%
-tests/__init__.py                                0      0   100%
-tests/conftest.py                               39     10    74%
-tests/test_dones.py                             21      0   100%
-tests/test_health.py                            11      0   100%
-tests/test_tasks.py                             99      0   100%
-----------------------------------------------------------------
-TOTAL                                          560     83    85%
-
-
-========================================== 6 passed in 27.76s ===========================================
-root@c6ea00e01944:/src# 
+Test Suites: 2 passed, 2 total
+Tests:       6 passed, 6 total
+Snapshots:   0 total
+Time:        26.691 s
+Ran all test suites.
+Done in 40.04s.
+root@d1569df7ec85:/usr/src/app#  
 ```

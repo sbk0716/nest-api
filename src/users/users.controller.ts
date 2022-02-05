@@ -10,8 +10,6 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ExportUserReportDto } from './dto/export-user-report.dto';
-import { ReportService } from '../report/report.service';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('users')
@@ -19,7 +17,6 @@ import { ApiTags } from '@nestjs/swagger';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly reportService: ReportService,
   ) {}
 
   @Post()
@@ -47,17 +44,4 @@ export class UsersController {
     return this.usersService.remove(id);
   }
 
-  @Post(':id/report')
-  async exportReport(
-    @Param('id') id: number,
-    @Body() exportUserReportDto: ExportUserReportDto,
-  ) {
-    const userInfo = await this.usersService.findOne(id);
-    const sendData = await this.reportService.export({
-      template: exportUserReportDto.template,
-      format: exportUserReportDto.format,
-      data: userInfo,
-    });
-    return sendData.Location;
-  }
 }

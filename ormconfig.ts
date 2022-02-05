@@ -1,8 +1,20 @@
-const dbHostName = process.env.DB_HOST_NAME || 'app-db';
-const dbPort = process.env.DB_PORT || 5432;
-const dbUserName = process.env.DB_USER_NAME || 'admin';
-const dbPassword = process.env.DB_PASSWORD || 'dummypassword';
-const dbName = process.env.DB_NAME || 'coredb';
+const dbHostName = process.env.POSTGRES_HOST || 'app-db';
+const dbPort = process.env.POSTGRES_PORT || 5432;
+const dbUserName = process.env.POSTGRES_USER || 'admin';
+const dbPassword = process.env.POSTGRES_PASSWORD || 'dummypassword';
+const tsOrJs = process.env.TS_OR_JS || 'ts';
+console.info('####################')
+console.info(`tsOrJs=${tsOrJs}`)
+console.info('####################')
+const entities = (tsOrJs === 'ts') ? 'src/**/*.entity.ts' : 'dist/**/*.entity{.ts,.js,.js.map}';
+const migrations = (tsOrJs === 'ts') ? 'src/migrations/*{.ts,.js}' : 'dist/src/migrations/*{.ts,.js,.js.map}';
+const migrationsDir = (tsOrJs === 'ts') ? 'src/migrations' : 'dist/src/migrations';
+
+let dbName = process.env.DB_NAME || 'coredb';
+
+if (process.env.MODE === 'TEST') {
+  dbName = 'testdb'
+}
 
 const connectionOptions = {
   type: 'postgres',
@@ -12,15 +24,15 @@ const connectionOptions = {
   password: dbPassword,
   database: dbName,
   synchronize: false,
-  entities: [
-    process.env.MODE === 'TEST'
-      ? 'src/**/*.entity.ts'
-      : 'dist/**/*.entity{.ts,.js}',
-  ],
-  migrations: ['dist/src/migrations/*{.ts,.js}'],
+  entities: [entities],
+  migrations: [migrations],
   cli: {
-    migrationsDir: 'src/migrations',
+    migrationsDir: migrationsDir,
   },
 };
+
+console.info('####################')
+console.info(connectionOptions)
+console.info('####################')
 
 module.exports = connectionOptions;
