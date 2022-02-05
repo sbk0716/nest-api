@@ -14,7 +14,8 @@ services:
       dockerfile: ./src/Dockerfile    # The Dockerfile used for building the image
     # Named volumes and paths on the host mapped to paths in the container
     volumes:
-      - .:/src
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
     # Ports that will be exposed to the host
     ports:
       - 3000:3000               # Connect port 8000 on your local PC to port 8000 on the docker container
