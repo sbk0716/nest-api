@@ -171,7 +171,7 @@ jobs:
           ls -la
           printenv | grep ENV
           yarn add pg
-          node pgClient.js
+          node db/pgClient.js
         env:
           ENV: test
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
