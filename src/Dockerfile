@@ -12,4 +12,4 @@ RUN yarn
 # expose the endpoint
 EXPOSE 3000
 # run the command
-CMD ["yarn","run","start"]
+ENTRYPOINT ["yarn","run","start"]

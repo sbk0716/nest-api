@@ -15,8 +15,6 @@ import { plainToClass } from 'class-transformer';
 import { User } from '../src/users/entities/user.entity';
 import { UsersModule } from '../src/users/users.module';
 import { UsersService } from '../src/users/users.service';
-import { ReportService } from '../src/report/report.service';
-import { FileFormat } from '../src/report/report.type';
 
 describe('【E2E】UsersController', () => {
   let app: NestFastifyApplication;
@@ -58,11 +56,6 @@ describe('【E2E】UsersController', () => {
         raw: [],
       }),
   };
-  const reportServiceSpy = {
-    export: () => {
-      return { Location: 'https://url.com/file.pdf' };
-    },
-  };
 
   beforeAll(async () => {
     const connectionOptions = await getConnectionOptions();
@@ -75,8 +68,6 @@ describe('【E2E】UsersController', () => {
     })
       .overrideProvider(UsersService)
       .useValue(userServiceSpy)
-      .overrideProvider(ReportService)
-      .useValue(reportServiceSpy)
       .compile();
 
     app = module.createNestApplication(new FastifyAdapter());
@@ -217,28 +208,6 @@ describe('【E2E】UsersController', () => {
           affected: 1,
           raw: [],
         });
-      });
-    });
-  });
-
-  describe('【API】POST /users/:id/report', () => {
-    describe('export report successful', () => {
-      let response: Response;
-      beforeAll(async () => {
-        response = await app.inject({
-          path: '/users/1/report',
-          method: 'POST',
-          payload: {
-            template: 1,
-            format: FileFormat.Pdf,
-          },
-        });
-      });
-
-      test('response should be success', () => {
-        expect(response.statusCode).toBe(201);
-        expect(response.statusMessage).toBe('Created');
-        expect(response.body).toBe('https://url.com/file.pdf');
       });
     });
   });
