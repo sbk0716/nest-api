@@ -2,8 +2,8 @@ const { Client } = require('pg');
 const host = process.env.POSTGRES_HOST;
 const port = process.env.POSTGRES_PORT;
 const user = process.env.POSTGRES_USER;
-const password = process.env.POSTGRES_DB;
-const database = process.env.POSTGRES_PASSWORD;
+const password = process.env.POSTGRES_PASSWORD;
+const database = process.env.POSTGRES_DB;
 
 const config = {
   host,
@@ -18,7 +18,7 @@ const client = new Client(config);
 const createRole = `CREATE ROLE root LOGIN SUPERUSER PASSWORD '${password}'`;
 
 // ALTER DATABASE
-const alterDatabase = `ALTER DATABASE '${database}' SET timezone TO 'Asia/Tokyo';`;
+const alterDatabase = `ALTER DATABASE ${database} SET timezone TO 'Asia/Tokyo';`;
 
 // SHOW DATABASE
 const showDatabase =
