@@ -4,7 +4,7 @@ const dbUserName = process.env.POSTGRES_USER || 'admin';
 const dbPassword = process.env.POSTGRES_PASSWORD || 'dummypassword';
 let dbName = process.env.DB_NAME || 'coredb';
 let entities = 'dist/**/*.entity{.ts,.js,.js.map}';
-let migrations = 'dist/src/migrations/*{.ts,.js,.js.map}';
+const migrations = 'dist/src/migrations/*{.ts,.js,.js.map}';
 if (process.env.MODE === 'TEST') {
   dbName = 'testdb';
   entities = 'src/**/*.entity.ts';

@@ -13,5 +13,12 @@
     "baseUrl": "./",
     "incremental": true
   },
-  "exclude": ["node_modules", "src/migrations/**/*", "dist"]
+  "exclude": ["node_modules", "dist"],
+  "include": [
+    "./src",
+    "./test",
+    "./.eslintrc.js",
+    "./.prettierrc.js",
+    "./ormconfig.ts"
+  ]
 }

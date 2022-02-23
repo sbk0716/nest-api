@@ -16,7 +16,6 @@ import { User } from '../src/users/entities/user.entity';
 import { UsersModule } from '../src/users/users.module';
 import { UsersService } from '../src/users/users.service';
 
-
 describe('【E2E】UsersController', () => {
   let app: NestFastifyApplication;
   let module: TestingModule;
