@@ -42,10 +42,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      # Install dependencies
-      - name: 'Install dependencies(eslint/prettier)'
+      # Install devDependencies
+      - name: 'Install devDependencies'
         run: |
-          yarn add -D eslint prettier
+          yarn add -D eslint prettier eslint-config-prettier eslint-plugin-prettier
       # Lint with eslint
       - name: 'Lint with eslint'
         run: |
@@ -116,7 +116,7 @@ jobs:
       - name: 'Install dependencies'
         run: |
           ls -la
-          yarn install --production=true
+          yarn install --production=false
       # Show Docker containers
       - name: 'Show Docker containers'
         run: |
