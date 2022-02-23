@@ -406,5 +406,42 @@ Snapshots:   0 total
 Time:        26.691 s
 Ran all test suites.
 Done in 40.04s.
-root@d1569df7ec85:/usr/src/app#  
+root@d1569df7ec85:/usr/src/app# 
+root@d1569df7ec85:/usr/src/app# yarn test:cov
+yarn run v1.22.17
+$ yarn test --coverage
+$ MODE=TEST NODE_OPTIONS=--max_old_space_size=4096 jest --detectOpenHandles --coverage
+ PASS  src/users/users.service.spec.ts (12.612 s)
+ PASS  src/users/users.controller.spec.ts
+-------|---------|----------|---------|---------|-------------------
+File   | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------|---------|----------|---------|---------|-------------------
+...les |   57.28 |      100 |   66.67 |   59.55 |                   
+ src   |       0 |      100 |       0 |       0 |                   
+  ...s |       0 |      100 |       0 |       0 | 1-22              
+  ...s |       0 |      100 |       0 |       0 | 1-28              
+ ...ns |       0 |      100 |       0 |       0 |                   
+  ...s |       0 |      100 |       0 |       0 | 3-13              
+ ...us |       0 |      100 |       0 |       0 |                   
+  ...s |       0 |      100 |       0 |       0 | 1-9               
+  ...s |       0 |      100 |     100 |       0 | 1-7               
+ ...rs |   82.98 |      100 |     100 |   85.37 |                   
+  ...s |     100 |      100 |     100 |     100 |                   
+  ...s |       0 |      100 |     100 |       0 | 1-12              
+  ...s |     100 |      100 |     100 |     100 |                   
+  ...s |     100 |      100 |     100 |     100 |                   
+ ...to |     100 |      100 |     100 |     100 |                   
+  ...s |     100 |      100 |     100 |     100 |                   
+  ...s |     100 |      100 |     100 |     100 |                   
+ ...es |     100 |      100 |     100 |     100 |                   
+  ...s |     100 |      100 |     100 |     100 |                   
+-------|---------|----------|---------|---------|-------------------
+
+Test Suites: 2 passed, 2 total
+Tests:       33 passed, 33 total
+Snapshots:   0 total
+Time:        20.424 s
+Ran all test suites.
+Done in 25.02s.
+root@d1569df7ec85:/usr/src/app# 
 ```
