@@ -1,0 +1,206 @@
+name: 'Node CI'
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+      - 'dependabot/**'
+
+env:
+  AWS_REGION: 'ap-northeast-1'
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+jobs:
+  lintFormatJob:
+    name: 'lint and format job'
+    runs-on: ubuntu-latest
+    # runs-on: [self-hosted, linux, x64]
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: 'Dump GITHUB_REF'
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: echo "$GITHUB_REF"
+      - name: 'Dump GITHUB_EVENT_PR_BASE_REF'
+        env:
+          GITHUB_EVENT_PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: echo "$GITHUB_EVENT_PR_BASE_REF"
+      - name: 'Dump GITHUB_EVENT_PR_HEAD_REF'
+        env:
+          GITHUB_EVENT_PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: echo "$GITHUB_EVENT_PR_HEAD_REF"
+      # Checkout
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      # Use Node.js
+      - name: 'Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Install dependencies
+      - name: 'Install dependencies(eslint/prettier)'
+        run: |
+          yarn add -D eslint prettier
+      # Lint with eslint
+      - name: 'Lint with eslint'
+        run: |
+          yarn run lint
+      # Format with prettier
+      - name: 'Format with prettier'
+        run: |
+          yarn run format
+      # Slack Notification on Failure
+      - name: 'Slack Notification on Failure'
+        uses: rtCamp/action-slack-notify@v2.0.0
+        if: failure()
+        env:
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_TITLE: 'Node CI lint and format job has failed :boom:'
+
+  testJob:
+    name: 'test job'
+    # Execute Job if GITHUB_EVENT_PR_HEAD_REF does not contain dependabot
+    if: ${{ contains(github.event.pull_request.head.ref, 'dependabot') != true}}
+    runs-on: ubuntu-latest
+    # runs-on: [self-hosted, linux, x64]
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_DB: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        # `ports` maps tcp port 5432 on service container to the host
+        ports:
+          - 5432:5432
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: 'Dump GITHUB_REF'
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: echo "$GITHUB_REF"
+      - name: 'Dump GITHUB_EVENT_PR_BASE_REF'
+        env:
+          GITHUB_EVENT_PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: echo "$GITHUB_EVENT_PR_BASE_REF"
+      - name: 'Dump GITHUB_EVENT_PR_HEAD_REF'
+        env:
+          GITHUB_EVENT_PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: echo "$GITHUB_EVENT_PR_HEAD_REF"
+      # Checkout
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+      # Use Node.js
+      - name: 'Use Node.js ${{ matrix.node-version }}'
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      # Install dependencies
+      - name: 'Install dependencies'
+        run: |
+          ls -la
+          yarn install --production=true
+      # Show Docker containers
+      - name: 'Show Docker containers'
+        run: |
+          echo "##### docker ps -a #####"
+          docker ps -a
+          echo "##### docker image ls #####"
+          docker image ls
+          echo "##### docker volume ls #####"
+          docker volume ls
+          echo "##### docker network ls #####"
+          docker network ls
+      # Check PostgreSQL information
+      - name: 'Check PostgreSQL information'
+        run: |
+          export PGPASSWORD=${POSTGRES_PASSWORD}
+          psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'SELECT datname, datdba, encoding, datcollate, datctype from pg_database;'
+          psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'SELECT usename, usesysid, usecreatedb, usesuper from pg_user;'
+        env:
+          ENV: test
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: postgres
+          POSTGRES_PORT: 5432
+      # Creat testdb
+      - name: 'Creat testdb'
+        run: |
+          export PGPASSWORD=${POSTGRES_PASSWORD}
+          psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'CREATE DATABASE "testdb";'
+        env:
+          ENV: test
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: postgres
+          POSTGRES_PORT: 5432
+      # Creat schema on testdb
+      - name: 'Creat schema on testdb'
+        run: |
+          export PGPASSWORD=${POSTGRES_PASSWORD}
+          psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'CREATE SCHEMA IF NOT EXISTS "todoist";'
+        env:
+          ENV: test
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: testdb
+          POSTGRES_PORT: 5432
+      # Setup PostgreSQL service container
+      - name: 'Setup PostgreSQL service container'
+        run: |
+          ls -la
+          printenv | grep ENV
+          node pgClient.js
+        env:
+          ENV: test
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: testdb
+          POSTGRES_PORT: 5432
+      # Execute migration
+      - name: 'Execute migration'
+        run: |
+          ls -la
+          printenv | grep ENV
+          yarn run migrate:run:test
+          yarn run migrate:show:test
+      # Unit Test with Jest
+      - name: 'Unit Test with Jest'
+        run: |
+          ls -la
+          printenv | grep ENV
+          yarn run test
+      # E2E Test with Jest
+      - name: 'E2E Test with Jest'
+        run: |
+          ls -la
+          printenv | grep ENV
+          yarn run e2e
+      # Slack Notification on Failure
+      - name: 'Slack Notification on Failure'
+        uses: rtCamp/action-slack-notify@v2.0.0
+        if: failure()
+        env:
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_TITLE: 'Node CI test job has failed :boom:'
