@@ -10,8 +10,14 @@ on:
       - 'dependabot/**'
 
 env:
-  AWS_REGION: 'ap-northeast-1'
+  NODE_ENV: development
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  POSTGRES_HOST: localhost
+  POSTGRES_DB: postgres
+  POSTGRES_PORT: 5432
   SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  AWS_REGION: 'ap-northeast-1'
 
 jobs:
   lintFormatJob:
@@ -134,37 +140,32 @@ jobs:
           export PGPASSWORD=${POSTGRES_PASSWORD}
           psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'SELECT datname, datdba, encoding, datcollate, datctype from pg_database;'
           psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'SELECT usename, usesysid, usecreatedb, usesuper from pg_user;'
-        env:
-          NODE_ENV: development
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_HOST: localhost
-          POSTGRES_DB: postgres
-          POSTGRES_PORT: 5432
+        # env:
+        #   NODE_ENV: development
+        #   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        #   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        #   POSTGRES_HOST: localhost
+        #   POSTGRES_DB: postgres
+        #   POSTGRES_PORT: 5432
       # Creat testdb
       - name: 'Creat testdb'
         run: |
           export PGPASSWORD=${POSTGRES_PASSWORD}
           psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'CREATE DATABASE "testdb";'
-        env:
-          NODE_ENV: development
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_HOST: localhost
-          POSTGRES_DB: postgres
-          POSTGRES_PORT: 5432
+        # env:
+        #   NODE_ENV: development
+        #   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        #   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        #   POSTGRES_HOST: localhost
+        #   POSTGRES_DB: postgres
+        #   POSTGRES_PORT: 5432
       # Creat schema on testdb
       - name: 'Creat schema on testdb'
         run: |
           export PGPASSWORD=${POSTGRES_PASSWORD}
           psql --port ${POSTGRES_PORT} --host ${POSTGRES_HOST} --username ${POSTGRES_USER} --dbname ${POSTGRES_DB} --command 'CREATE SCHEMA IF NOT EXISTS "todoist";'
         env:
-          NODE_ENV: development
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_HOST: localhost
           POSTGRES_DB: testdb
-          POSTGRES_PORT: 5432
       # Setup PostgreSQL service container
       - name: 'Setup PostgreSQL service container'
         run: |
@@ -173,12 +174,7 @@ jobs:
           yarn add pg
           node db/pgClient.js
         env:
-          NODE_ENV: development
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_HOST: localhost
           POSTGRES_DB: testdb
-          POSTGRES_PORT: 5432
       # Execute migration
       - name: 'Execute migration'
         run: |
@@ -187,12 +183,7 @@ jobs:
           yarn run migrate:run:test
           yarn run migrate:show:test
         env:
-          NODE_ENV: development
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_HOST: localhost
           POSTGRES_DB: testdb
-          POSTGRES_PORT: 5432
 
       # Unit Test with Jest
       - name: 'Unit Test with Jest'
@@ -201,12 +192,15 @@ jobs:
           printenv | grep NODE_ENV
           yarn run test
         env:
-          NODE_ENV: development
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_HOST: localhost
           POSTGRES_DB: testdb
-          POSTGRES_PORT: 5432
+      # Unit Test with Jest | Coverage
+      - name: 'Unit Test with Jest | Coverage'
+        run: |
+          ls -la
+          printenv | grep NODE_ENV
+          yarn run test:cov
+        env:
+          POSTGRES_DB: testdb
       # E2E Test with Jest
       - name: 'E2E Test with Jest'
         run: |
@@ -214,12 +208,7 @@ jobs:
           printenv | grep NODE_ENV
           yarn run test:e2e
         env:
-          NODE_ENV: development
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_HOST: localhost
           POSTGRES_DB: testdb
-          POSTGRES_PORT: 5432
       # Slack Notification on Failure
       - name: 'Slack Notification on Failure'
         uses: rtCamp/action-slack-notify@v2.0.0
