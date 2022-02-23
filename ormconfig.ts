@@ -3,12 +3,15 @@ const dbPort = process.env.POSTGRES_PORT || 5432;
 const dbUserName = process.env.POSTGRES_USER || 'admin';
 const dbPassword = process.env.POSTGRES_PASSWORD || 'dummypassword';
 let dbName = process.env.DB_NAME || 'coredb';
-let entities = 'dist/**/*.entity{.ts,.js,.js.map}';
-const migrations = 'dist/src/migrations/*{.ts,.js,.js.map}';
+// let entities = 'dist/**/*.entity{.ts,.js,.js.map}';
+// let migrations = 'dist/src/migrations/*{.ts,.js,.js.map}';
 if (process.env.MODE === 'TEST') {
   dbName = 'testdb';
-  entities = 'src/**/*.entity.ts';
+  // entities = 'src/**/*.entity{.ts,.js}';
+  // migrations = 'src/migrations/*{.ts,.js,.js.map}';
 }
+const entities = 'src/**/*.entity{.ts,.js}';
+const migrations = 'src/migrations/*{.ts,.js,.js.map}';
 
 const connectionOptions = {
   type: 'postgres',
@@ -22,7 +25,7 @@ const connectionOptions = {
   migrations: [migrations],
 };
 
-// console.info('####################');
-// console.info(connectionOptions);
-// console.info('####################');
+console.info('####################');
+console.info(connectionOptions);
+console.info('####################');
 module.exports = connectionOptions;
