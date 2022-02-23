@@ -43,7 +43,7 @@
     "@nestjs/serve-static": "^2.1.4",
     "@nestjs/swagger": "^4.7.15",
     "@nestjs/typeorm": "^7.1.5",
-    "aws-sdk": "^2.845.0",
+    "aws-sdk": "^2.1080.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "fastify-static": "^4.0.1",
