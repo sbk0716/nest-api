@@ -186,18 +186,40 @@ jobs:
           printenv | grep ENV
           yarn run migrate:run:test
           yarn run migrate:show:test
+        env:
+          ENV: test
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: testdb
+          POSTGRES_PORT: 5432
+
       # Unit Test with Jest
       - name: 'Unit Test with Jest'
         run: |
           ls -la
           printenv | grep ENV
           yarn run test
+        env:
+          ENV: test
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: testdb
+          POSTGRES_PORT: 5432
       # E2E Test with Jest
       - name: 'E2E Test with Jest'
         run: |
           ls -la
           printenv | grep ENV
           yarn run e2e
+        env:
+          ENV: test
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: testdb
+          POSTGRES_PORT: 5432
       # Slack Notification on Failure
       - name: 'Slack Notification on Failure'
         uses: rtCamp/action-slack-notify@v2.0.0
