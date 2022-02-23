@@ -1,10 +1,13 @@
 # 1. Project Overview
-This is a project for an app called `nest-orm-api`.
+This is a project for an app called `nest-api`.
 
 ## (1)App Features
 This app is able to use below function.
 
 ### User Story
+- You can log in to this app.
+- You can log out from this app.
+- Only logged-in users can execute the REST API for this app.
 - You can add any task.
 - You can read the list of tasks.
 - You can read the details of any task.
