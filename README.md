@@ -46,6 +46,53 @@ admin@gw-mac nest-orm-api-main % tree -d
 admin@gw-mac nest-orm-api-main % 
 ```
 
+## (3)TSConfig
+
+*tsconfig.json*
+```yaml
+compilerOptions:
+  module: commonjs
+  declaration: true
+  removeComments: true
+  emitDecoratorMetadata: true
+  experimentalDecorators: true
+  allowSyntheticDefaultImports: true
+  target: es2017
+  sourceMap: true
+  outDir: "./dist"
+  baseUrl: "./"
+  incremental: true
+  skipLibCheck: true
+  strictNullChecks: false
+  noImplicitAny: false
+  strictBindCallApply: false
+  forceConsistentCasingInFileNames: false
+  noFallthroughCasesInSwitch: false
+  allowJs: true
+exclude:
+- "./node_modules"
+- "./dist"
+include:
+- "./src"
+- "./test"
+- "./.eslintrc.js"
+- "./.prettierrc.js"
+- "./ormconfig.ts"
+```
+
+*tsconfig.build.json*
+```yaml
+extends: "./tsconfig.json"
+exclude:
+- node_modules
+- test
+- dist
+- coverage
+- "**/*spec.ts"
+```
+
+FYI: https://www.typescriptlang.org/tsconfig
+
 
 # 2. Usage
 ## (1)yarn install
