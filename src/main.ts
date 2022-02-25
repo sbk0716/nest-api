@@ -16,8 +16,8 @@ async function bootstrap() {
 
   // Define swagger document
   const config = new DocumentBuilder()
-    .setTitle('Nest ORM API')
-    .setDescription('Documentation for Nest ORM API')
+    .setTitle('Nest API')
+    .setDescription('Documentation for Nest API')
     .setVersion('1.0.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

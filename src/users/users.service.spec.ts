@@ -15,7 +15,6 @@ import {
 } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import anything = jasmine.anything;
 import { userData } from './users.testdata';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
@@ -73,9 +72,9 @@ describe('【Service】UsersService', () => {
       test('result should be InsertResult object', () => {
         expect(result).toStrictEqual(
           plainToClass(InsertResult, {
-            identifiers: [{ id: anything() }],
-            generatedMaps: anything(),
-            raw: anything(),
+            identifiers: [{ id: expect.anything() }],
+            generatedMaps: expect.anything(),
+            raw: expect.anything(),
           }),
         );
       });
@@ -83,13 +82,13 @@ describe('【Service】UsersService', () => {
       test('createdUser should return same as value as CreateUserDto', () => {
         expect(createdUser).toStrictEqual(
           plainToClass(User, {
-            id: anything(),
+            id: expect.anything(),
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         );
       });
@@ -132,9 +131,9 @@ describe('【Service】UsersService', () => {
       test('result should be InsertResult object', () => {
         expect(result).toStrictEqual(
           plainToClass(InsertResult, {
-            identifiers: [{ id: anything() }],
-            generatedMaps: anything(),
-            raw: anything(),
+            identifiers: [{ id: expect.anything() }],
+            generatedMaps: expect.anything(),
+            raw: expect.anything(),
           }),
         );
       });
@@ -142,13 +141,13 @@ describe('【Service】UsersService', () => {
       test('createdUser should be User object', () => {
         expect(createdUser).toStrictEqual(
           plainToClass(User, {
-            id: anything(),
+            id: expect.anything(),
             firstName: '',
             lastName: '',
             firstNameKana: '',
             lastNameKana: '',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         );
       });
@@ -192,8 +191,8 @@ describe('【Service】UsersService', () => {
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         ]);
       });
@@ -219,8 +218,8 @@ describe('【Service】UsersService', () => {
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         );
       });
@@ -287,8 +286,8 @@ describe('【Service】UsersService', () => {
             lastName: 'newLastName',
             firstNameKana: 'newFirstNameKana',
             lastNameKana: 'newLastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         );
       });
@@ -331,8 +330,8 @@ describe('【Service】UsersService', () => {
             lastName: 'newLastName',
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         );
       });
@@ -375,8 +374,8 @@ describe('【Service】UsersService', () => {
             lastName: '',
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         );
       });

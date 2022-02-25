@@ -11,7 +11,6 @@ import {
   UpdateResult,
 } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import anything = jasmine.anything;
 import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('UsersController', () => {
@@ -130,8 +129,8 @@ describe('UsersController', () => {
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         ]);
       });
@@ -175,8 +174,8 @@ describe('UsersController', () => {
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
-            createdAt: anything(),
-            updatedAt: anything(),
+            createdAt: expect.anything(),
+            updatedAt: expect.anything(),
           }),
         );
       });
