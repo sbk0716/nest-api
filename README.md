@@ -46,6 +46,53 @@ admin@gw-mac nest-orm-api-main % tree -d
 admin@gw-mac nest-orm-api-main % 
 ```
 
+## (3)TSConfig
+
+*tsconfig.json*
+```yaml
+compilerOptions:
+  module: commonjs
+  declaration: true
+  removeComments: true
+  emitDecoratorMetadata: true
+  experimentalDecorators: true
+  allowSyntheticDefaultImports: true
+  target: es2017
+  sourceMap: true
+  outDir: "./dist"
+  baseUrl: "./"
+  incremental: true
+  skipLibCheck: true
+  strictNullChecks: false
+  noImplicitAny: false
+  strictBindCallApply: false
+  forceConsistentCasingInFileNames: false
+  noFallthroughCasesInSwitch: false
+  allowJs: true
+exclude:
+- "./node_modules"
+- "./dist"
+include:
+- "./src"
+- "./test"
+- "./.eslintrc.js"
+- "./.prettierrc.js"
+- "./ormconfig.ts"
+```
+
+*tsconfig.build.json*
+```yaml
+extends: "./tsconfig.json"
+exclude:
+- node_modules
+- test
+- dist
+- coverage
+- "**/*spec.ts"
+```
+
+FYI: https://www.typescriptlang.org/tsconfig
+
 
 # 2. Usage
 ## (1)yarn install
@@ -278,8 +325,9 @@ admin@gw-mac nest-orm-api-main %
 admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
 root@d1569df7ec85:/usr/src/app# 
 root@d1569df7ec85:/usr/src/app# yarn lint
-yarn run v1.22.17$ eslint "{src,apps,libs,test}/**/*.ts" --fix
-Done in 20.75s.
+yarn run v1.22.17
+$ eslint "./ormconfig.ts" "{src,test}/**/*.{ts,js}" --fix
+Done in 16.45s.
 root@d1569df7ec85:/usr/src/app# 
 ```
 
@@ -289,55 +337,26 @@ admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
 root@d1569df7ec85:/usr/src/app# 
 root@d1569df7ec85:/usr/src/app# yarn format
 yarn run v1.22.17
-$ prettier --write "src/**/*.ts" "test/**/*.ts"
-src/app.module.ts 182ms
-src/configs/aws.config.ts 6ms
-src/dynamo-db/dto/create-dynamo-db-item.dto.ts 4ms
-src/dynamo-db/dto/get-dynamo-db-item.dto.ts 5ms
-src/dynamo-db/dynamo-db.module.ts 4ms
-src/dynamo-db/dynamo-db.service.spec.ts 8ms
-src/dynamo-db/dynamo-db.service.ts 12ms
-src/main.ts 13ms
-src/migrations/1644047378747-CreateUserTable.ts 6ms
-src/order/dto/create-order.dto.ts 5ms
-src/order/order.controller.spec.ts 9ms
-src/order/order.controller.ts 7ms
-src/order/order.d.ts 3ms
-src/order/order.module.ts 3ms
-src/order/order.service.spec.ts 5ms
-src/order/order.service.ts 13ms
-src/report/dto/export-report.dto.ts 3ms
-src/report/report.controller.spec.ts 4ms
-src/report/report.controller.ts 5ms
-src/report/report.module.ts 3ms
-src/report/report.service.spec.ts 4ms
-src/report/report.service.ts 23ms
-src/report/report.type.ts 3ms
-src/s3-file/s3-file.interface.ts 4ms
-src/s3-file/s3-file.module.ts 2ms
-src/s3-file/s3-file.service.spec.ts 5ms
-src/s3-file/s3-file.service.ts 8ms
-src/sqs/dto/send-message.dto.ts 3ms
-src/sqs/sqs.module.ts 2ms
-src/sqs/sqs.service.spec.ts 4ms
-src/sqs/sqs.service.ts 3ms
-src/status/status.controller.spec.ts 4ms
-src/status/status.controller.ts 3ms
-src/status/status.module.ts 2ms
-src/users/dto/create-user.dto.ts 2ms
-src/users/dto/export-user-report.dto.ts 2ms
+$ prettier --write "./ormconfig.ts" "{src,test}/**/*.{ts,js}"
+ormconfig.ts 34ms
+src/app.module.ts 12ms
+src/main.ts 12ms
+src/migrations/1644047378747-CreateUserTable.ts 7ms
+src/status/status.controller.ts 5ms
+src/status/status.module.ts 3ms
+src/users/dto/create-user.dto.ts 6ms
 src/users/dto/update-user.dto.ts 2ms
-src/users/entities/user.entity.ts 3ms
-src/users/users.controller.spec.ts 46ms
-src/users/users.controller.ts 8ms
-src/users/users.module.ts 3ms
-src/users/users.service.spec.ts 46ms
-src/users/users.service.ts 7ms
-src/users/users.testdata.ts 1ms
-test/app.e2e-spec.ts 4ms
-test/modules/test-manager.ts 8ms
-test/users.e2e-spec.ts 31ms
-Done in 1.69s.
+src/users/entities/user.entity.ts 8ms
+src/users/users.controller.spec.ts 56ms
+src/users/users.controller.ts 9ms
+src/users/users.module.ts 4ms
+src/users/users.service.spec.ts 82ms
+src/users/users.service.ts 28ms
+src/users/users.testdata.ts 2ms
+test/app.e2e-spec.ts 5ms
+test/modules/test-manager.ts 9ms
+test/users.e2e-spec.ts 36ms
+Done in 1.07s.
 root@d1569df7ec85:/usr/src/app# 
 ```
 
