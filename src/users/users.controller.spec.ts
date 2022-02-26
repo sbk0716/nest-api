@@ -17,6 +17,10 @@ describe('UsersController', () => {
   let userController: UsersController;
   let userService: UsersService;
   let module: TestingModule;
+  const headers: { [index: string]: string } = {
+    host: 'localhost:9999',
+    authorization: 'test-token',
+  };
 
   beforeAll(async () => {
     const connectionOptions = await getConnectionOptions();
@@ -66,6 +70,7 @@ describe('UsersController', () => {
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
           }),
+          headers,
         );
       });
 
@@ -114,7 +119,7 @@ describe('UsersController', () => {
           }),
         ]);
 
-        result = await userController.findAll();
+        result = await userController.findAll(headers);
       });
 
       afterAll(() => {
@@ -159,7 +164,7 @@ describe('UsersController', () => {
           }),
         );
 
-        result = await userController.findOne(1);
+        result = await userController.findOne(1, headers);
       });
 
       afterAll(() => {
@@ -208,6 +213,7 @@ describe('UsersController', () => {
             firstNameKana: 'firstNameKana',
             lastNameKana: 'lastNameKana',
           }),
+          headers,
         );
       });
 
@@ -252,7 +258,7 @@ describe('UsersController', () => {
           }),
         );
 
-        result = await userController.remove(1);
+        result = await userController.remove(1, headers);
       });
 
       afterAll(() => {

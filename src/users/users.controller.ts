@@ -6,11 +6,10 @@ import {
   Put,
   Param,
   Delete,
-  Request,
-  Req,
   Logger,
   HttpException,
   HttpStatus,
+  Headers,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -34,21 +33,21 @@ export class UsersController {
     status: 200,
     description: 'You have successfully created a user.',
   })
-  create(@Body() createUserDto: CreateUserDto, @Req() request?: Request) {
-    if (!!request) {
-      const authorization = null;
-      if (!request?.headers.hasOwnProperty('authorization')) {
-        Logger.error(`[ERROR] - Forbidden! [authorization: ${authorization}]`);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error: `Forbidden! [authorization: ${authorization}]`,
-          },
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      Logger.log('### authorization ###');
-      Logger.log(request.headers['authorization']);
+  create(
+    @Body() createUserDto: CreateUserDto,
+    @Headers() headers: { [index: string]: string },
+  ) {
+    Logger.log('### headers ###');
+    Logger.log(headers);
+    if (!headers?.hasOwnProperty('authorization')) {
+      Logger.error(`[ERROR] - authorization is undefined!]`);
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: `[ERROR] - authorization is undefined!]`,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
     return this.usersService.create(createUserDto);
   }
@@ -59,21 +58,18 @@ export class UsersController {
     status: 200,
     description: 'You have successfully retrieved the list of all users.',
   })
-  findAll(@Req() request?: Request) {
-    if (!!request) {
-      const authorization = null;
-      if (!request?.headers.hasOwnProperty('authorization')) {
-        Logger.error(`[ERROR] - Forbidden! [authorization: ${authorization}]`);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error: `Forbidden! [authorization: ${authorization}]`,
-          },
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      Logger.log('### authorization ###');
-      Logger.log(request.headers['authorization']);
+  findAll(@Headers() headers: { [index: string]: string }) {
+    Logger.log('### headers ###');
+    Logger.log(headers);
+    if (!headers?.hasOwnProperty('authorization')) {
+      Logger.error(`[ERROR] - authorization is undefined!]`);
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: `[ERROR] - authorization is undefined!]`,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
     return this.usersService.findAll();
   }
@@ -84,21 +80,21 @@ export class UsersController {
     status: 200,
     description: "You have successfully retrieved the user's information.",
   })
-  findOne(@Param('id') id: number, @Req() request?: Request) {
-    if (!!request) {
-      const authorization = null;
-      if (!request?.headers.hasOwnProperty('authorization')) {
-        Logger.error(`[ERROR] - Forbidden! [authorization: ${authorization}]`);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error: `Forbidden! [authorization: ${authorization}]`,
-          },
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      Logger.log('### authorization ###');
-      Logger.log(request.headers['authorization']);
+  findOne(
+    @Param('id') id: number,
+    @Headers() headers: { [index: string]: string },
+  ) {
+    Logger.log('### headers ###');
+    Logger.log(headers);
+    if (!headers?.hasOwnProperty('authorization')) {
+      Logger.error(`[ERROR] - authorization is undefined!]`);
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: `[ERROR] - authorization is undefined!]`,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
     return this.usersService.findOne(id);
   }
@@ -112,22 +108,19 @@ export class UsersController {
   update(
     @Param('id') id: number,
     @Body() updateUserDto: UpdateUserDto,
-    @Req() request?: Request,
+    @Headers() headers: { [index: string]: string },
   ) {
-    if (!!request) {
-      const authorization = null;
-      if (!request?.headers.hasOwnProperty('authorization')) {
-        Logger.error(`[ERROR] - Forbidden! [authorization: ${authorization}]`);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error: `Forbidden! [authorization: ${authorization}]`,
-          },
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      Logger.log('### authorization ###');
-      Logger.log(request.headers['authorization']);
+    Logger.log('### headers ###');
+    Logger.log(headers);
+    if (!headers?.hasOwnProperty('authorization')) {
+      Logger.error(`[ERROR] - authorization is undefined!]`);
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: `[ERROR] - authorization is undefined!]`,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
     return this.usersService.update(id, updateUserDto);
   }
@@ -138,21 +131,21 @@ export class UsersController {
     status: 200,
     description: "You have successfully removed the user's information.",
   })
-  remove(@Param('id') id: number, @Req() request?: Request) {
-    if (!!request) {
-      const authorization = null;
-      if (!request?.headers.hasOwnProperty('authorization')) {
-        Logger.error(`[ERROR] - Forbidden! [authorization: ${authorization}]`);
-        throw new HttpException(
-          {
-            status: HttpStatus.FORBIDDEN,
-            error: `Forbidden! [authorization: ${authorization}]`,
-          },
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      Logger.log('### authorization ###');
-      Logger.log(request.headers['authorization']);
+  remove(
+    @Param('id') id: number,
+    @Headers() headers: { [index: string]: string },
+  ) {
+    Logger.log('### headers ###');
+    Logger.log(headers);
+    if (!headers?.hasOwnProperty('authorization')) {
+      Logger.error(`[ERROR] - authorization is undefined!]`);
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: `[ERROR] - authorization is undefined!]`,
+        },
+        HttpStatus.FORBIDDEN,
+      );
     }
     return this.usersService.remove(id);
   }
