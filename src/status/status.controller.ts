@@ -1,4 +1,4 @@
-import { Controller, Get, Logger } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Container Health Check')
@@ -12,7 +12,6 @@ export class StatusController {
       'You have successfully completed a health check on the container.',
   })
   getStatus() {
-    Logger.log('### Execute getStatus ###');
     return 'Container health check was successful!';
   }
 }
