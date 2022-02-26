@@ -8,7 +8,9 @@ RUN ls -la && sleep 5
 # check yarn version
 RUN yarn -v
 # install dependencies
-RUN yarn
+RUN yarn install --production=false
+# install @nestjs/cli to execute `nest build`
+RUN yarn add -D @nestjs/cli
 # expose the endpoint
 EXPOSE 3000
 # run the command

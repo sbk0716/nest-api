@@ -7,12 +7,14 @@ FROM node:16 AS appbuild
 WORKDIR /usr/src/app
 # copy all files
 COPY ./ ./
-# List files and directories.
+# List files and directories
 RUN ls -la && sleep 5
 # check yarn version
 RUN yarn -v
 # install dependencies
-RUN yarn
+RUN yarn install --production=false
+# install @nestjs/cli to execute `nest build`
+RUN yarn add -D @nestjs/cli
 # api build
 RUN yarn run build:prod
 # list files and directories
