@@ -23,6 +23,6 @@ describe('AppController (e2e)', () => {
       path: '/api/status',
       method: 'GET',
     });
-    expect(response.body).toBe('I am living');
+    expect(response.body).toBe('Container health check was successful!');
   });
 });
