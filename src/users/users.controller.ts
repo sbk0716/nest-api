@@ -29,7 +29,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiOperation({ summary: 'create' })
+  @ApiOperation({
+    summary: 'Execute UsersController.create()',
+    description: 'Create a user.',
+  })
   @ApiResponse({
     status: 200,
     description: 'You have successfully created a user.',
@@ -65,7 +68,10 @@ export class UsersController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'findAll' })
+  @ApiOperation({
+    summary: 'Execute UsersController.findAll()',
+    description: 'Retrieve a list of all users.',
+  })
   @ApiResponse({
     status: 200,
     description: 'You have successfully retrieved the list of all users.',
@@ -88,9 +94,13 @@ export class UsersController {
 
   @Get(':id')
   @ApiOperation({ summary: 'findOne' })
+  @ApiOperation({
+    summary: 'Execute UsersController.findOne()',
+    description: 'Retrieve the user information.',
+  })
   @ApiResponse({
     status: 200,
-    description: "You have successfully retrieved the user's information.",
+    description: 'You have successfully retrieved the user information.',
   })
   findOne(
     @Param('id') id: number,
@@ -113,9 +123,13 @@ export class UsersController {
 
   @Put(':id')
   @ApiOperation({ summary: 'update' })
+  @ApiOperation({
+    summary: 'Execute UsersController.update()',
+    description: 'Update the user information.',
+  })
   @ApiResponse({
     status: 200,
-    description: "You have successfully updated the user's information.",
+    description: 'You have successfully updated the user information.',
   })
   update(
     @Param('id') id: number,
@@ -150,9 +164,13 @@ export class UsersController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'remove' })
+  @ApiOperation({
+    summary: 'Execute UsersController.remove()',
+    description: 'Remove the user information.',
+  })
   @ApiResponse({
     status: 200,
-    description: "You have successfully removed the user's information.",
+    description: 'You have successfully removed the user information.',
   })
   remove(
     @Param('id') id: number,
