@@ -65,6 +65,7 @@ describe('UsersController', () => {
 
         result = await userController.create(
           plainToClass(CreateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -81,6 +82,7 @@ describe('UsersController', () => {
       test('UserService.create should be called with CreateUserDto', () => {
         expect(createUserSpy).toBeCalledWith(
           plainToClass(CreateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -110,6 +112,7 @@ describe('UsersController', () => {
         findAllSpy = jest.spyOn(userService, 'findAll').mockResolvedValue([
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -130,6 +133,7 @@ describe('UsersController', () => {
         expect(result).toStrictEqual([
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -155,6 +159,7 @@ describe('UsersController', () => {
         findOneSpy = jest.spyOn(userService, 'findOne').mockResolvedValue(
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -175,6 +180,7 @@ describe('UsersController', () => {
         expect(result).toStrictEqual(
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -208,6 +214,7 @@ describe('UsersController', () => {
         result = await userController.update(
           1,
           plainToClass(UpdateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -235,6 +242,7 @@ describe('UsersController', () => {
         expect(updateUserSpy).toBeCalledWith(
           1,
           plainToClass(UpdateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',

@@ -5,22 +5,26 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Schema } from '../../configs/database';
 
-@Entity({ schema: 'public' })
+@Entity({ schema: Schema.private })
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false, unique: true })
+  email: string;
+
+  @Column({ nullable: false, unique: false })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: false, unique: false })
   lastName: string;
 
-  @Column()
+  @Column({ nullable: false, unique: false })
   firstNameKana: string;
 
-  @Column()
+  @Column({ nullable: false, unique: false })
   lastNameKana: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
