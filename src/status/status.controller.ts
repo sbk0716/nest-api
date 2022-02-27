@@ -5,7 +5,10 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 @Controller('status')
 export class StatusController {
   @Get()
-  @ApiOperation({ summary: 'getStatus' })
+  @ApiOperation({
+    summary: 'Execute StatusController.getStatus()',
+    description: 'Get the status of the container.'
+  })
   @ApiResponse({
     status: 200,
     description:
