@@ -30,6 +30,7 @@ describe('【E2E】UsersController', () => {
     findAll: () => [
       plainToClass(User, {
         id: 1,
+        email: 'testuser01@gmail.com',
         firstName: 'firstName',
         lastName: 'lastName',
         firstNameKana: 'firstNameKana',
@@ -39,6 +40,7 @@ describe('【E2E】UsersController', () => {
     findOne: () =>
       plainToClass(User, {
         id: 1,
+        email: 'testuser01@gmail.com',
         firstName: 'firstName',
         lastName: 'lastName',
         firstNameKana: 'firstNameKana',
@@ -88,6 +90,7 @@ describe('【E2E】UsersController', () => {
           path: '/users',
           method: 'POST',
           payload: {
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -128,6 +131,7 @@ describe('【E2E】UsersController', () => {
         expect(bodyJson).toStrictEqual([
           {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -155,6 +159,7 @@ describe('【E2E】UsersController', () => {
         const bodyJson = JSON.parse(response.body);
         expect(bodyJson).toStrictEqual({
           id: 1,
+          email: 'testuser01@gmail.com',
           firstName: 'firstName',
           lastName: 'lastName',
           firstNameKana: 'firstNameKana',
@@ -173,6 +178,7 @@ describe('【E2E】UsersController', () => {
           path: '/users/1',
           method: 'PUT',
           payload: {
+            email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
             lastName: 'newLastName',
             firstNameKana: 'newFirstNameKana',

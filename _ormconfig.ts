@@ -1,3 +1,5 @@
+// const TypeOrmNamingStrategy = require('./.ormNameStrategy');
+
 const nodeEnv = process.env.NODE_ENV || 'development';
 console.info('process.env.NODE_ENV= ', nodeEnv);
 const dbHostName = process.env.POSTGRES_HOST || 'app-db';
@@ -10,14 +12,12 @@ let migrations = 'dist/src/migrations/*{.ts,.js,.js.map}';
 
 if (process.env.MODE === 'TEST') {
   dbName = 'testdb';
-  entities = 'src/**/*.entity{.ts,.js}';
-  migrations = 'src/migrations/*{.ts,.js,.js.map}';
 }
 
-// if (nodeEnv === 'development') {
-//   entities = 'src/**/*.entity{.ts,.js}';
-//   migrations = 'src/migrations/*{.ts,.js,.js.map}';
-// }
+if (nodeEnv === 'development') {
+  entities = 'src/**/*.entity.ts';
+  migrations = 'src/migrations/*.ts';
+}
 
 const connectionOptions = {
   type: 'postgres',
@@ -26,12 +26,15 @@ const connectionOptions = {
   username: dbUserName,
   password: dbPassword,
   database: dbName,
+  logging: false,
   synchronize: false, // Setting `synchronize: true` shouldn't be used in production.
   entities: [entities],
   migrations: [migrations],
   cli: {
     migrationsDir: 'src/migrations',
+    entitiesDir: 'src/entities',
   },
+  // namingStrategy: new TypeOrmNamingStrategy(),
 };
 
 if (process.env.DB_SECRETS) {

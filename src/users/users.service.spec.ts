@@ -59,6 +59,7 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(userData));
         result = await userService.create(
           plainToClass(CreateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -83,6 +84,7 @@ describe('【Service】UsersService', () => {
         expect(createdUser).toStrictEqual(
           plainToClass(User, {
             id: expect.anything(),
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -118,6 +120,7 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(userData));
         result = await userService.create(
           plainToClass(CreateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: '',
             lastName: '',
             firstNameKana: '',
@@ -142,6 +145,7 @@ describe('【Service】UsersService', () => {
         expect(createdUser).toStrictEqual(
           plainToClass(User, {
             id: expect.anything(),
+            email: 'testuser01@gmail.com',
             firstName: '',
             lastName: '',
             firstNameKana: '',
@@ -187,6 +191,7 @@ describe('【Service】UsersService', () => {
         expect(result).toStrictEqual([
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -214,6 +219,7 @@ describe('【Service】UsersService', () => {
         expect(result).toStrictEqual(
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
             firstNameKana: 'firstNameKana',
@@ -258,6 +264,7 @@ describe('【Service】UsersService', () => {
         result = await userService.update(
           1,
           plainToClass(UpdateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
             lastName: 'newLastName',
             firstNameKana: 'newFirstNameKana',
@@ -282,6 +289,7 @@ describe('【Service】UsersService', () => {
         expect(updatedUser).toStrictEqual(
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
             lastName: 'newLastName',
             firstNameKana: 'newFirstNameKana',
@@ -326,6 +334,7 @@ describe('【Service】UsersService', () => {
         expect(updatedUser).toStrictEqual(
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
             lastName: 'newLastName',
             firstNameKana: 'firstNameKana',
@@ -370,6 +379,7 @@ describe('【Service】UsersService', () => {
         expect(updatedUser).toStrictEqual(
           plainToClass(User, {
             id: 1,
+            email: 'testuser01@gmail.com',
             firstName: '',
             lastName: '',
             firstNameKana: 'firstNameKana',
@@ -390,6 +400,7 @@ describe('【Service】UsersService', () => {
         result = await userService.update(
           1,
           plainToClass(UpdateUserDto, {
+            email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
             lastName: 'newLastName',
             firstNameKana: 'newFirstNameKana',

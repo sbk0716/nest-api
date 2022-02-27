@@ -7,7 +7,7 @@ export class StatusController {
   @Get()
   @ApiOperation({
     summary: 'Execute StatusController.getStatus()',
-    description: 'Get the status of the container.'
+    description: 'Get the status of the container.',
   })
   @ApiResponse({
     status: 200,

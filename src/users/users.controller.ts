@@ -20,6 +20,7 @@ import {
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
+import { plainToClass } from 'class-transformer';
 
 @ApiTags('CRUD operations on users table')
 @ApiSecurity('access-key_for_rest-api')
@@ -34,7 +35,7 @@ export class UsersController {
     description: 'You have successfully created a user.',
   })
   create(
-    @Body() createUserDto: CreateUserDto,
+    @Body() createParams: CreateUserDto,
     @Headers() headers: { [index: string]: string },
   ) {
     Logger.log('### headers ###');
@@ -47,6 +48,17 @@ export class UsersController {
           error: `[ERROR] - authorization is undefined!]`,
         },
         HttpStatus.FORBIDDEN,
+      );
+    }
+    const createUserDto = plainToClass(CreateUserDto, createParams);
+    if (!createUserDto.hasRequiredAttributes) {
+      Logger.error(`[ERROR] - The parameter is invalid!`);
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] - The parameter is invalid!`,
+        },
+        HttpStatus.BAD_REQUEST,
       );
     }
     return this.usersService.create(createUserDto);
@@ -107,7 +119,7 @@ export class UsersController {
   })
   update(
     @Param('id') id: number,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() updateParams: UpdateUserDto,
     @Headers() headers: { [index: string]: string },
   ) {
     Logger.log('### headers ###');
@@ -120,6 +132,17 @@ export class UsersController {
           error: `[ERROR] - authorization is undefined!]`,
         },
         HttpStatus.FORBIDDEN,
+      );
+    }
+    const updateUserDto = plainToClass(UpdateUserDto, updateParams);
+    if (!updateUserDto.hasRequiredAttributes) {
+      Logger.error(`[ERROR] - The parameter is invalid!`);
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: `[ERROR] - The parameter is invalid!`,
+        },
+        HttpStatus.BAD_REQUEST,
       );
     }
     return this.usersService.update(id, updateUserDto);

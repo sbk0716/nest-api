@@ -12,19 +12,19 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: true, unique: true })
   email: string;
 
-  @Column({ nullable: false, unique: false })
+  @Column({ nullable: true, unique: false })
   firstName: string;
 
-  @Column({ nullable: false, unique: false })
+  @Column({ nullable: true, unique: false })
   lastName: string;
 
-  @Column({ nullable: false, unique: false })
+  @Column({ nullable: true, unique: false })
   firstNameKana: string;
 
-  @Column({ nullable: false, unique: false })
+  @Column({ nullable: true, unique: false })
   lastNameKana: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
