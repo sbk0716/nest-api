@@ -26,7 +26,7 @@ const connectionOptions = {
   username: dbUserName,
   password: dbPassword,
   database: dbName,
-  synchronize: false,
+  synchronize: false, // Setting `synchronize: true` shouldn't be used in production.
   entities: [entities],
   migrations: [migrations],
 };
@@ -41,7 +41,4 @@ if (process.env.DB_SECRETS) {
   connectionOptions.database = dbSecrets.dbName;
 }
 
-console.info('####################');
-console.info(connectionOptions);
-console.info('####################');
 module.exports = connectionOptions;
