@@ -84,6 +84,7 @@ describe('【E2E】UsersController', () => {
 
       beforeAll(async () => {
         response = await app.inject({
+          headers: { authorization: 'test-token' },
           path: '/users',
           method: 'POST',
           payload: {
@@ -114,6 +115,7 @@ describe('【E2E】UsersController', () => {
       let response: Response;
       beforeAll(async () => {
         response = await app.inject({
+          headers: { authorization: 'test-token' },
           path: '/users',
           method: 'GET',
         });
@@ -141,6 +143,7 @@ describe('【E2E】UsersController', () => {
       let response: Response;
       beforeAll(async () => {
         response = await app.inject({
+          headers: { authorization: 'test-token' },
           path: '/users/1',
           method: 'GET',
         });
@@ -166,6 +169,7 @@ describe('【E2E】UsersController', () => {
       let response: Response;
       beforeAll(async () => {
         response = await app.inject({
+          headers: { authorization: 'test-token' },
           path: '/users/1',
           method: 'PUT',
           payload: {
@@ -195,6 +199,7 @@ describe('【E2E】UsersController', () => {
       let response: Response;
       beforeAll(async () => {
         response = await app.inject({
+          headers: { authorization: 'test-token' },
           path: '/users/1',
           method: 'DELETE',
         });
