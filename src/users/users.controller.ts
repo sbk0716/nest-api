@@ -41,8 +41,7 @@ export class UsersController {
     @Body() createParams: CreateUserDto,
     @Headers() headers: { [index: string]: string },
   ) {
-    Logger.log('### headers ###');
-    Logger.log(headers);
+    Logger.log(JSON.stringify(headers));
     if (!headers?.hasOwnProperty('authorization')) {
       Logger.error(`[ERROR] - authorization is undefined!]`);
       throw new HttpException(
@@ -77,8 +76,7 @@ export class UsersController {
     description: 'You have successfully retrieved the list of all users.',
   })
   findAll(@Headers() headers: { [index: string]: string }) {
-    Logger.log('### headers ###');
-    Logger.log(headers);
+    Logger.log(JSON.stringify(headers));
     if (!headers?.hasOwnProperty('authorization')) {
       Logger.error(`[ERROR] - authorization is undefined!]`);
       throw new HttpException(
@@ -106,8 +104,7 @@ export class UsersController {
     @Param('id') id: number,
     @Headers() headers: { [index: string]: string },
   ) {
-    Logger.log('### headers ###');
-    Logger.log(headers);
+    Logger.log(JSON.stringify(headers));
     if (!headers?.hasOwnProperty('authorization')) {
       Logger.error(`[ERROR] - authorization is undefined!]`);
       throw new HttpException(
@@ -136,8 +133,7 @@ export class UsersController {
     @Body() updateParams: UpdateUserDto,
     @Headers() headers: { [index: string]: string },
   ) {
-    Logger.log('### headers ###');
-    Logger.log(headers);
+    Logger.log(JSON.stringify(headers));
     if (!headers?.hasOwnProperty('authorization')) {
       Logger.error(`[ERROR] - authorization is undefined!]`);
       throw new HttpException(
@@ -176,8 +172,7 @@ export class UsersController {
     @Param('id') id: number,
     @Headers() headers: { [index: string]: string },
   ) {
-    Logger.log('### headers ###');
-    Logger.log(headers);
+    Logger.log(JSON.stringify(headers));
     if (!headers?.hasOwnProperty('authorization')) {
       Logger.error(`[ERROR] - authorization is undefined!]`);
       throw new HttpException(

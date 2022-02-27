@@ -38,7 +38,7 @@ export class UpdateUserDto {
 
   @ApiProperty({
     required: false,
-    description: 'Las Name Kana',
+    description: 'Last Name Kana',
     default: 'オオタニ',
   })
   @IsNotEmpty()
