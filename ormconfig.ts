@@ -19,7 +19,7 @@ if (process.env.MODE === 'TEST') {
 //   migrations = 'src/migrations/*{.ts,.js,.js.map}';
 // }
 
-const localConnectionOptions = {
+const connectionOptions = {
   type: 'postgres',
   host: dbHostName,
   port: dbPort,
@@ -34,11 +34,11 @@ const localConnectionOptions = {
 if (process.env.DB_SECRETS) {
   const raw = process.env.DB_SECRETS;
   const dbSecrets = JSON.parse(raw);
-  localConnectionOptions.host = process.env.DB_ENDPOINT;
-  localConnectionOptions.port = process.env.DB_PORT;
-  localConnectionOptions.username = dbSecrets.dbUserName;
-  localConnectionOptions.password = dbSecrets.dbPassword;
-  localConnectionOptions.database = dbSecrets.dbName;
+  connectionOptions.host = process.env.DB_ENDPOINT;
+  connectionOptions.port = process.env.DB_PORT;
+  connectionOptions.username = dbSecrets.dbUserName;
+  connectionOptions.password = dbSecrets.dbPassword;
+  connectionOptions.database = dbSecrets.dbName;
 }
 
-module.exports = localConnectionOptions;
+module.exports = connectionOptions;
