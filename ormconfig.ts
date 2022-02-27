@@ -1,23 +1,26 @@
+const SnakeNamingStrategy =
+  require('typeorm-naming-strategies').SnakeNamingStrategy; // eslint-disable-line @typescript-eslint/no-var-requires
 const nodeEnv = process.env.NODE_ENV || 'development';
 console.info('process.env.NODE_ENV= ', nodeEnv);
+
 const dbHostName = process.env.POSTGRES_HOST || 'app-db';
 const dbPort = process.env.POSTGRES_PORT || 5432;
 const dbUserName = process.env.POSTGRES_USER || 'admin';
 const dbPassword = process.env.POSTGRES_PASSWORD || 'dummypassword';
 let dbName = process.env.DB_NAME || 'coredb';
+/**
+ * @todo
+ * dist/src/migrations/*{.ts,.js,.js.map}
+ * --> dist/migrations/*{.ts,.js,.js.map}
+ */
 let entities = 'dist/**/*.entity{.ts,.js,.js.map}';
 let migrations = 'dist/src/migrations/*{.ts,.js,.js.map}';
 
 if (process.env.MODE === 'TEST') {
   dbName = 'testdb';
-  entities = 'src/**/*.entity{.ts,.js}';
-  migrations = 'src/migrations/*{.ts,.js,.js.map}';
+  entities = 'src/**/*.entity.ts';
+  migrations = 'src/migrations/*.ts';
 }
-
-// if (nodeEnv === 'development') {
-//   entities = 'src/**/*.entity{.ts,.js}';
-//   migrations = 'src/migrations/*{.ts,.js,.js.map}';
-// }
 
 const connectionOptions = {
   type: 'postgres',
@@ -26,12 +29,14 @@ const connectionOptions = {
   username: dbUserName,
   password: dbPassword,
   database: dbName,
+  logging: true,
   synchronize: false, // Setting `synchronize: true` shouldn't be used in production.
   entities: [entities],
   migrations: [migrations],
   cli: {
-    migrationsDir: 'src/migrations',
+    migrationsDir: 'src/migrations', // Directory where the new migration file will be created.
   },
+  namingStrategy: new SnakeNamingStrategy(),
 };
 
 if (process.env.DB_SECRETS) {

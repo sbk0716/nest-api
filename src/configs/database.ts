@@ -3,3 +3,5 @@ export const Schema = {
   private: 'private',
   todoist: 'todoist',
 };
+
+export type SchemaType = typeof Schema[keyof typeof Schema];
