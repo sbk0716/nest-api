@@ -15,7 +15,7 @@ import Fastify from 'fastify';
 
 /**
  * Create an instance of FastifyInstance with logger-related settings.
- * {@link https://getpino.io/#/docs/api?id=loggerlevel-string-gettersetter}
+ * {@see https://getpino.io/#/docs/api?id=loggerlevel-string-gettersetter}
  */
 const fastifyInstance = Fastify({
   logger: {
@@ -25,7 +25,7 @@ const fastifyInstance = Fastify({
 
 /**
  * onRoute: Triggered when a new route is registered.
- * {@link https://www.fastify.io/docs/latest/Reference/Hooks/#onroute}
+ * @see https://www.fastify.io/docs/latest/Reference/Hooks/#onroute
  */
 fastifyInstance.addHook('onRoute', (routeOptions) => {
   if (routeOptions.path === '/api/status') {
@@ -70,7 +70,7 @@ async function bootstrap() {
    * By default, Fastify listens only on the localhost 127.0.0.1 interface.
    * If you want to accept connections on other hosts,
    * you should specify '0.0.0.0' in the listen() call.
-   * {@link https://www.fastify.io/docs/latest/Reference/Server/#listen}
+   * @see https://www.fastify.io/docs/latest/Reference/Server/#listen
    */
   console.info('commonConfig.API_PORT=', commonConfig.API_PORT);
   await app.listen(Number(commonConfig.API_PORT), '0.0.0.0');

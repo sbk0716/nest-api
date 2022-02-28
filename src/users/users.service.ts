@@ -12,6 +12,10 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   constructor(
+    /**
+     * You can inject the target repository into the target service
+     * by setting Imports on the target module.
+     */
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}

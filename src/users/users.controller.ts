@@ -91,7 +91,6 @@ export class UsersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'findOne' })
   @ApiOperation({
     summary: 'Execute UsersController.findOne()',
     description: 'Retrieve the user information.',
@@ -119,7 +118,6 @@ export class UsersController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'update' })
   @ApiOperation({
     summary: 'Execute UsersController.update()',
     description: 'Update the user information.',
@@ -159,7 +157,6 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'remove' })
   @ApiOperation({
     summary: 'Execute UsersController.remove()',
     description: 'Remove the user information.',
