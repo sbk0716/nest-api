@@ -12,6 +12,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { commonConfig } from './configs/common';
 import Fastify from 'fastify';
+import { ReadUserDto } from './users/dto/read-user.dto';
 
 /**
  * Create an instance of FastifyInstance with logger-related settings.
@@ -35,6 +36,29 @@ fastifyInstance.addHook('onRoute', (routeOptions) => {
   }
 });
 
+fastifyInstance.addHook('onRequest', async (request) => {
+  const user: ReadUserDto = await getUserInfo();
+  // See `./@types/fastify/index.d.ts`
+  request.user = user;
+});
+
+/**
+ * @todo
+ * get user info from db or cognito
+ */
+const getUserInfo = async () => {
+  console.info('get user info');
+
+  const user = {
+    id: 9999,
+    email: 'shohei_ohtani@gmail.com',
+    firstName: '翔平',
+    lastName: '大谷',
+    firstNameKana: 'ショーヘイ',
+    lastNameKana: 'オオタニ',
+  };
+  return user;
+};
 async function bootstrap() {
   /**
    * Execute constructor of FastifyAdapter with FastifyInstance as an argument,
