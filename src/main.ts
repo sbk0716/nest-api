@@ -50,7 +50,7 @@ const getUserInfo = async () => {
   console.info('get user info');
 
   const user = {
-    id: 9999,
+    id: 'X000000X-4000-4000-4000-120000000000',
     email: 'shohei_ohtani@gmail.com',
     firstName: '翔平',
     lastName: '大谷',

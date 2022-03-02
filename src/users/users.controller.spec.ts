@@ -169,7 +169,10 @@ describe('UsersController', () => {
           }),
         );
 
-        result = await userController.findOne('80000000-4000-4000-4000-120000000000', headers);
+        result = await userController.findOne(
+          '80000000-4000-4000-4000-120000000000',
+          headers,
+        );
       });
 
       afterAll(() => {
@@ -192,7 +195,9 @@ describe('UsersController', () => {
       });
 
       test('UserService.findOne should be called with id string', () => {
-        expect(findOneSpy).toBeCalledWith('80000000-4000-4000-4000-120000000000');
+        expect(findOneSpy).toBeCalledWith(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
     });
   });
@@ -266,7 +271,10 @@ describe('UsersController', () => {
           }),
         );
 
-        result = await userController.remove('80000000-4000-4000-4000-120000000000', headers);
+        result = await userController.remove(
+          '80000000-4000-4000-4000-120000000000',
+          headers,
+        );
       });
 
       afterAll(() => {
@@ -283,7 +291,9 @@ describe('UsersController', () => {
       });
 
       test('UserService.remove should be called with id string', () => {
-        expect(removeUserSpy).toBeCalledWith('80000000-4000-4000-4000-120000000000');
+        expect(removeUserSpy).toBeCalledWith(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
     });
   });
