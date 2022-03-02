@@ -1,3 +1,4 @@
+import { instanceToPlain } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
@@ -43,6 +44,10 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   lastNameKana: string;
+
+  get attributes() {
+    return instanceToPlain(this);
+  }
 
   get hasRequiredAttributes(): boolean {
     if (

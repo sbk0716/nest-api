@@ -23,13 +23,13 @@ describe('【E2E】UsersController', () => {
     create: () =>
       plainToClass(InsertResult, {
         affected: 1,
-        identifiers: [{ id: 1 }],
+        identifiers: [{ id: '80000000-4000-4000-4000-120000000000' }],
         generatedMaps: [],
         raw: [],
       }),
     findAll: () => [
       plainToClass(User, {
-        id: 1,
+        id: '80000000-4000-4000-4000-120000000000',
         email: 'testuser01@gmail.com',
         firstName: 'firstName',
         lastName: 'lastName',
@@ -39,7 +39,7 @@ describe('【E2E】UsersController', () => {
     ],
     findOne: () =>
       plainToClass(User, {
-        id: 1,
+        id: '80000000-4000-4000-4000-120000000000',
         email: 'testuser01@gmail.com',
         firstName: 'firstName',
         lastName: 'lastName',
@@ -105,7 +105,7 @@ describe('【E2E】UsersController', () => {
         const bodyJson = JSON.parse(response.body);
         expect(bodyJson).toStrictEqual({
           affected: 1,
-          identifiers: [{ id: 1 }],
+          identifiers: [{ id: '80000000-4000-4000-4000-120000000000' }],
           generatedMaps: [],
           raw: [],
         });
@@ -130,7 +130,7 @@ describe('【E2E】UsersController', () => {
         const bodyJson = JSON.parse(response.body);
         expect(bodyJson).toStrictEqual([
           {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
@@ -148,7 +148,7 @@ describe('【E2E】UsersController', () => {
       beforeAll(async () => {
         response = await app.inject({
           headers: { authorization: 'test-token' },
-          path: '/users/1',
+          path: '/users/80000000-4000-4000-4000-120000000000',
           method: 'GET',
         });
       });
@@ -158,7 +158,7 @@ describe('【E2E】UsersController', () => {
         expect(response.statusMessage).toBe('OK');
         const bodyJson = JSON.parse(response.body);
         expect(bodyJson).toStrictEqual({
-          id: 1,
+          id: '80000000-4000-4000-4000-120000000000',
           email: 'testuser01@gmail.com',
           firstName: 'firstName',
           lastName: 'lastName',
@@ -175,7 +175,7 @@ describe('【E2E】UsersController', () => {
       beforeAll(async () => {
         response = await app.inject({
           headers: { authorization: 'test-token' },
-          path: '/users/1',
+          path: '/users/80000000-4000-4000-4000-120000000000',
           method: 'PUT',
           payload: {
             email: 'testuser01@gmail.com',
@@ -206,7 +206,7 @@ describe('【E2E】UsersController', () => {
       beforeAll(async () => {
         response = await app.inject({
           headers: { authorization: 'test-token' },
-          path: '/users/1',
+          path: '/users/80000000-4000-4000-4000-120000000000',
           method: 'DELETE',
         });
       });

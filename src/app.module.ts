@@ -10,10 +10,10 @@ import { getConnectionOptions } from 'typeorm';
 
 @Module({
   /**
-   * imports
+   * ModuleMetadata | imports
    * Optional list of imported modules that export the providers
    * which are required in this module.
-   * {@link https://docs.nestjs.com/techniques/database#typeorm-integration}
+   * @see https://docs.nestjs.com/techniques/database#typeorm-integration
    */
   imports: [
     // Import the TypeOrmModule with the settings related to the DB connection.

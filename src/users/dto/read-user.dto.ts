@@ -1,10 +1,9 @@
-import { instanceToPlain } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export class UpdateUserDto {
+export class ReadUserDto {
   @ApiProperty({
-    required: false,
+    required: true,
     description: 'Email',
     default: 'shohei_ohtani@gmail.com',
   })
@@ -13,7 +12,7 @@ export class UpdateUserDto {
   email: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     description: 'First Name',
     default: '翔平',
   })
@@ -22,7 +21,7 @@ export class UpdateUserDto {
 
   @IsNotEmpty()
   @ApiProperty({
-    required: false,
+    required: true,
     description: 'Last Name',
     default: '大谷',
   })
@@ -30,7 +29,7 @@ export class UpdateUserDto {
   lastName: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     description: 'First Name Kana',
     default: 'ショーヘイ',
   })
@@ -38,19 +37,10 @@ export class UpdateUserDto {
   firstNameKana: string;
 
   @ApiProperty({
-    required: false,
+    required: true,
     description: 'Last Name Kana',
     default: 'オオタニ',
   })
   @IsNotEmpty()
   lastNameKana: string;
-
-  get attributes() {
-    return instanceToPlain(this);
-  }
-
-  get hasRequiredAttributes(): boolean {
-    if (this.email) return true;
-    return false;
-  }
 }

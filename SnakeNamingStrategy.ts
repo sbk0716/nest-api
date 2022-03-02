@@ -1,6 +1,6 @@
 /**
  * typeorm-naming-strategies
- * {@link https://github.com/tonivj5/typeorm-naming-strategies/blob/master/src/snake-naming.strategy.ts}
+ * @see https://github.com/tonivj5/typeorm-naming-strategies/blob/master/src/snake-naming.strategy.ts
  */
 import { DefaultNamingStrategy, NamingStrategyInterface } from 'typeorm';
 import { snakeCase } from 'typeorm/util/StringUtils.js';
