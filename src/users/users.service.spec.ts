@@ -190,7 +190,7 @@ describe('【Service】UsersService', () => {
         expect(result.length).toBe(1);
         expect(result).toStrictEqual([
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
@@ -212,13 +212,13 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(userData));
         await generateTestData(userData);
 
-        result = await userService.findOne(1);
+        result = await userService.findOne('80000000-4000-4000-4000-120000000000');
       });
 
       test('result should be User entity object', () => {
         expect(result).toStrictEqual(
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
@@ -237,7 +237,7 @@ describe('【Service】UsersService', () => {
       beforeAll(async () => {
         await truncateTestData(Object.keys(userData));
 
-        action = userService.findOne(1);
+        action = userService.findOne('80000000-4000-4000-4000-120000000000');
       });
 
       test('action should throw NotFoundException error', async () => {
@@ -262,7 +262,7 @@ describe('【Service】UsersService', () => {
         await generateTestData(userData);
 
         result = await userService.update(
-          1,
+          '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
@@ -272,7 +272,7 @@ describe('【Service】UsersService', () => {
           }),
         );
 
-        updatedUser = await userRepository.findOne(1);
+        updatedUser = await userRepository.findOne('80000000-4000-4000-4000-120000000000');
       });
 
       test('result should be UpdateResult', () => {
@@ -288,7 +288,7 @@ describe('【Service】UsersService', () => {
       test('updatedUser should be User entity object with updated information', () => {
         expect(updatedUser).toStrictEqual(
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
             lastName: 'newLastName',
@@ -310,14 +310,14 @@ describe('【Service】UsersService', () => {
         await generateTestData(userData);
 
         result = await userService.update(
-          1,
+          '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             firstName: 'newFirstName',
             lastName: 'newLastName',
           }),
         );
 
-        updatedUser = await userRepository.findOne(1);
+        updatedUser = await userRepository.findOne('80000000-4000-4000-4000-120000000000');
       });
 
       test('result should be UpdateResult', () => {
@@ -333,7 +333,7 @@ describe('【Service】UsersService', () => {
       test('updatedUser should be User entity object with updated information', () => {
         expect(updatedUser).toStrictEqual(
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
             lastName: 'newLastName',
@@ -355,14 +355,14 @@ describe('【Service】UsersService', () => {
         await generateTestData(userData);
 
         result = await userService.update(
-          1,
+          '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             firstName: '',
             lastName: '',
           }),
         );
 
-        updatedUser = await userRepository.findOne(1);
+        updatedUser = await userRepository.findOne('80000000-4000-4000-4000-120000000000');
       });
 
       test('result should be UpdateResult', () => {
@@ -378,7 +378,7 @@ describe('【Service】UsersService', () => {
       test('updatedUser should be User entity object with updated information', () => {
         expect(updatedUser).toStrictEqual(
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: '',
             lastName: '',
@@ -398,7 +398,7 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(userData));
 
         result = await userService.update(
-          1,
+          '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             email: 'testuser01@gmail.com',
             firstName: 'newFirstName',
@@ -430,9 +430,9 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(userData));
         await generateTestData(userData);
 
-        result = await userService.remove(1);
+        result = await userService.remove('80000000-4000-4000-4000-120000000000');
 
-        findDeletedUserAction = userService.findOne(1);
+        findDeletedUserAction = userService.findOne('80000000-4000-4000-4000-120000000000');
       });
 
       test('result should be DeleteResult object with affected 1 record', () => {
@@ -461,7 +461,7 @@ describe('【Service】UsersService', () => {
       beforeAll(async () => {
         await truncateTestData(Object.keys(userData));
 
-        result = await userService.remove(1);
+        result = await userService.remove('80000000-4000-4000-4000-120000000000');
       });
 
       test('result should be DeleteResult object with affected 0 record', () => {

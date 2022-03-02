@@ -19,31 +19,57 @@ This app is able to use below function.
 
 ## (2)Project Structure
 ```sh
-admin@gw-mac nest-orm-api-main % tree -d
+admin@gw-mac nest-api % tree -L 4
 .
-├── assets
+├── README.md
+├── SnakeNamingStrategy.ts
 ├── db
+│   ├── pgClient.js
+│   └── postgresql.conf
+├── docker-compose.prod.yaml
+├── docker-compose.yaml
+├── env.sample
+├── nest-cli.json
+├── ormconfig.ts
+├── package.json
 ├── src
+│   ├── Dockerfile
+│   ├── Dockerfile.prod
+│   ├── app.module.ts
 │   ├── configs
-│   ├── dynamo-db
-│   │   └── dto
+│   │   ├── common.ts
+│   │   └── database.ts
+│   ├── main.ts
 │   ├── migrations
-│   ├── order
-│   │   └── dto
-│   ├── report
-│   │   └── dto
-│   ├── s3-file
-│   ├── sqs
-│   │   └── dto
+│   │   ├── 1645945793441-CreateSchema.ts
+│   │   └── 1645959615375-CreateUserTable.ts
 │   ├── status
+│   │   ├── status.controller.ts
+│   │   └── status.module.ts
 │   └── users
 │       ├── dto
-│       └── entities
-└── test
-    └── modules
+│       │   ├── create-user.dto.ts
+│       │   └── update-user.dto.ts
+│       ├── entities
+│       │   └── user.entity.ts
+│       ├── users.controller.spec.ts
+│       ├── users.controller.ts
+│       ├── users.module.ts
+│       ├── users.service.spec.ts
+│       ├── users.service.ts
+│       └── users.testdata.ts
+├── test
+│   ├── app.e2e-spec.ts
+│   ├── jest-e2e.json
+│   ├── modules
+│   │   └── test-manager.ts
+│   └── users.e2e-spec.ts
+├── tsconfig.build.json
+├── tsconfig.json
+└── yarn.lock
 
-20 directories
-admin@gw-mac nest-orm-api-main % 
+10 directories, 36 files
+admin@gw-mac nest-api % 
 ```
 
 ## (3)TSConfig
@@ -97,47 +123,47 @@ FYI: https://www.typescriptlang.org/tsconfig
 # 2. Usage
 ## (1)yarn install
 ```sh
-admin@gw-mac nest-orm-api-main % docker-compose run --entrypoint "yarn install --production=false" app-api
-Creating nest-orm-api-main_app-api_run ... done
+admin@gw-mac nest-api % docker-compose run --entrypoint "yarn install --production=false" app-api
+Creating nest-api_app-api_run ... done
 yarn install v1.22.17
 [1/4] Resolving packages...
 success Already up-to-date.
 Done in 0.47s.
-admin@gw-mac nest-orm-api-main % 
+admin@gw-mac nest-api % 
 ```
 
 ## (2)docker-compose up
 ```sh
-admin@gw-mac nest-orm-api-main % docker image ls
+admin@gw-mac nest-api % docker image ls
 REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
 postgres     latest    da2cb49d7a8d   9 days ago   374MB
-admin@gw-mac nest-orm-api-main % 
-admin@gw-mac nest-orm-api-main % docker volume ls
+admin@gw-mac nest-api % 
+admin@gw-mac nest-api % docker volume ls
 DRIVER    VOLUME NAME
-admin@gw-mac nest-orm-api-main % 
-admin@gw-mac nest-orm-api-main % docker-compose up -d --build
-Creating volume "nest-orm-api-main_postgres_data" with default driver
+admin@gw-mac nest-api % 
+admin@gw-mac nest-api % docker-compose up -d --build
+Creating volume "nest-api_postgres_data" with default driver
 Building app-api
 ...
 ...
-admin@gw-mac nest-orm-api-main % 
-admin@gw-mac nest-orm-api-main % docker image ls
+admin@gw-mac nest-api % 
+admin@gw-mac nest-api % docker image ls
 REPOSITORY                  TAG       IMAGE ID       CREATED              SIZE
-nest-orm-api-main_app-api   latest    c9f02abc054b   About a minute ago   821MB
+nest-api_app-api   latest    c9f02abc054b   About a minute ago   821MB
 postgres                    latest    da2cb49d7a8d   9 days ago           374MB
-admin@gw-mac nest-orm-api-main % docker volume ls
+admin@gw-mac nest-api % docker volume ls
 DRIVER    VOLUME NAME
-local     nest-orm-api-main_postgres_data
-admin@gw-mac nest-orm-api-main % docker ps
+local     nest-api_postgres_data
+admin@gw-mac nest-api % docker ps
 CONTAINER ID   IMAGE                       COMMAND                  CREATED              STATUS              PORTS                                       NAMES
-56f716a9d147   postgres:latest             "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   nest-orm-api-main_app-db_1
-544d04001494   nest-orm-api-main_app-api   "yarn run start"         About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   nest-orm-api-main_app-api_1
-admin@gw-mac nest-orm-api-main % 
+56f716a9d147   postgres:latest             "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   nest-api_app-db_1
+544d04001494   nest-api_app-api   "yarn run start"         About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   nest-api_app-api_1
+admin@gw-mac nest-api % 
 ```
 
 ## (3)create schema and testdb
 ```sh
-admin@gw-mac nest-orm-api-main % docker-compose exec app-db /bin/bash
+admin@gw-mac nest-api % docker-compose exec app-db /bin/bash
 root@56f716a9d147:/# printenv | grep PASS
 POSTGRES_PASSWORD=***
 root@56f716a9d147:/# psql --username admin --dbname coredb
@@ -185,12 +211,12 @@ testdb=#
 testdb=# \q
 root@56f716a9d147:/# exit
 exit
-admin@gw-mac nest-orm-api-main % 
+admin@gw-mac nest-api % 
 ```
 
 ## (4)migratation for app db
 ```sh
-admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
+admin@gw-mac nest-api % docker-compose exec app-api /bin/bash
 root@544d04001494:/usr/src/app# 
 root@544d04001494:/usr/src/app# yarn migrate:show
 yarn run v1.22.17
@@ -245,32 +271,32 @@ root@544d04001494:/usr/src/app#
 
 ## (5)docker-compose down
 ```sh
-admin@gw-mac nest-orm-api-main % docker-compose down
-Removing nest-orm-api-main_app-db_1  ... done
-Removing nest-orm-api-main_app-api_1 ... done
-Removing network nest-orm-api-main_default
-admin@gw-mac nest-orm-api-main % 
-admin@gw-mac nest-orm-api-main % docker image ls
+admin@gw-mac nest-api % docker-compose down
+Removing nest-api_app-db_1  ... done
+Removing nest-api_app-api_1 ... done
+Removing network nest-api_default
+admin@gw-mac nest-api % 
+admin@gw-mac nest-api % docker image ls
 REPOSITORY                  TAG       IMAGE ID       CREATED       SIZE
-nest-orm-api-main_app-api   latest    c9f02abc054b   3 hours ago   821MB
+nest-api_app-api   latest    c9f02abc054b   3 hours ago   821MB
 postgres                    latest    da2cb49d7a8d   9 days ago    374MB
-admin@gw-mac nest-orm-api-main % 
-admin@gw-mac nest-orm-api-main % docker volume ls
+admin@gw-mac nest-api % 
+admin@gw-mac nest-api % docker volume ls
 DRIVER    VOLUME NAME
-local     nest-orm-api-main_postgres_data
-admin@gw-mac nest-orm-api-main % 
-admin@gw-mac nest-orm-api-main % docker image rm c9f02abc054b da2cb49d7a8d
-admin@gw-mac nest-orm-api-main % 
-admin@gw-mac nest-orm-api-main % docker volume rm nest-orm-api-main_postgres_data
-nest-orm-api-main_postgres_data
-admin@gw-mac nest-orm-api-main % 
+local     nest-api_postgres_data
+admin@gw-mac nest-api % 
+admin@gw-mac nest-api % docker image rm c9f02abc054b da2cb49d7a8d
+admin@gw-mac nest-api % 
+admin@gw-mac nest-api % docker volume rm nest-api_postgres_data
+nest-api_postgres_data
+admin@gw-mac nest-api % 
 ```
 
 
 # 3. Generate migratation file
 ## (1)generate migratation file
 ```sh
-admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
+admin@gw-mac nest-api % docker-compose exec app-api /bin/bash
 root@d1569df7ec85:/usr/src/app# 
 root@d1569df7ec85:/usr/src/app# yarn migrate:generate CreateUserTable
 yarn run v1.22.17
@@ -284,7 +310,7 @@ root@d1569df7ec85:/usr/src/app#
 # 4. operation verification
 ## (1)POST /api/users/
 ```sh
-admin@gw-mac nest-orm-api-main % curl -X POST 'localhost:3000/api/users' \
+admin@gw-mac nest-api % curl -X POST 'localhost:3000/api/users' \
 -H 'Content-Type: application/json' \
 -d '{
     "firstName": "Dat",
@@ -316,13 +342,13 @@ admin@gw-mac nest-orm-api-main % curl -X POST 'localhost:3000/api/users' \
     }
   ]
 }
-admin@gw-mac nest-orm-api-main % 
+admin@gw-mac nest-api % 
 ```
 
 # 5. Lint and Format
 ## (1)yarn lint
 ```sh
-admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
+admin@gw-mac nest-api % docker-compose exec app-api /bin/bash
 root@d1569df7ec85:/usr/src/app# 
 root@d1569df7ec85:/usr/src/app# yarn lint
 yarn run v1.22.17
@@ -333,7 +359,7 @@ root@d1569df7ec85:/usr/src/app#
 
 ## (2)yarn format
 ```sh
-admin@gw-mac nest-orm-api-main % docker-compose exec app-api /bin/bash
+admin@gw-mac nest-api % docker-compose exec app-api /bin/bash
 root@d1569df7ec85:/usr/src/app# 
 root@d1569df7ec85:/usr/src/app# yarn format
 yarn run v1.22.17

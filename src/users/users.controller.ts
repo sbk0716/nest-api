@@ -91,7 +91,6 @@ export class UsersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'findOne' })
   @ApiOperation({
     summary: 'Execute UsersController.findOne()',
     description: 'Retrieve the user information.',
@@ -101,7 +100,7 @@ export class UsersController {
     description: 'You have successfully retrieved the user information.',
   })
   findOne(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Headers() headers: { [index: string]: string },
   ) {
     Logger.log(JSON.stringify(headers));
@@ -119,7 +118,6 @@ export class UsersController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'update' })
   @ApiOperation({
     summary: 'Execute UsersController.update()',
     description: 'Update the user information.',
@@ -129,7 +127,7 @@ export class UsersController {
     description: 'You have successfully updated the user information.',
   })
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() updateParams: UpdateUserDto,
     @Headers() headers: { [index: string]: string },
   ) {
@@ -159,7 +157,6 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'remove' })
   @ApiOperation({
     summary: 'Execute UsersController.remove()',
     description: 'Remove the user information.',
@@ -169,7 +166,7 @@ export class UsersController {
     description: 'You have successfully removed the user information.',
   })
   remove(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Headers() headers: { [index: string]: string },
   ) {
     Logger.log(JSON.stringify(headers));

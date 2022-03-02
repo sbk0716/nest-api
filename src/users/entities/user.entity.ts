@@ -9,8 +9,8 @@ import { Schema } from '../../configs/database';
 
 @Entity({ schema: Schema.private })
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ nullable: false, unique: true })
   email: string;

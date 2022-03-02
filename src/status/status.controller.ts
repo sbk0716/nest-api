@@ -1,5 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { User } from '../user.decorator';
+// import { User as UserEntity } from '../users/entities/user.entity';
 
 @ApiTags('Container Health Check')
 @Controller('status')
@@ -14,7 +16,8 @@ export class StatusController {
     description:
       'You have successfully completed a health check on the container.',
   })
-  getStatus() {
+  getStatus(@User('id') id: string) {
+    console.info('id=', id);
     return 'Container health check was successful!';
   }
 }

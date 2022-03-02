@@ -57,7 +57,7 @@ describe('UsersController', () => {
       beforeAll(async () => {
         createUserSpy = jest.spyOn(userService, 'create').mockResolvedValue(
           plainToClass(InsertResult, {
-            affected: 1,
+            affected: '80000000-4000-4000-4000-120000000000',
             generatedMaps: [],
             raw: [],
           }),
@@ -94,7 +94,7 @@ describe('UsersController', () => {
       test('result should be InsertResult', () => {
         expect(result).toStrictEqual(
           plainToClass(InsertResult, {
-            affected: 1,
+            affected: '80000000-4000-4000-4000-120000000000',
             generatedMaps: [],
             raw: [],
           }),
@@ -111,7 +111,7 @@ describe('UsersController', () => {
       beforeAll(async () => {
         findAllSpy = jest.spyOn(userService, 'findAll').mockResolvedValue([
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
@@ -132,7 +132,7 @@ describe('UsersController', () => {
       test('result should be array User', () => {
         expect(result).toStrictEqual([
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
@@ -158,7 +158,7 @@ describe('UsersController', () => {
       beforeAll(async () => {
         findOneSpy = jest.spyOn(userService, 'findOne').mockResolvedValue(
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
@@ -169,7 +169,7 @@ describe('UsersController', () => {
           }),
         );
 
-        result = await userController.findOne(1, headers);
+        result = await userController.findOne('80000000-4000-4000-4000-120000000000', headers);
       });
 
       afterAll(() => {
@@ -179,7 +179,7 @@ describe('UsersController', () => {
       test('result should be User', () => {
         expect(result).toStrictEqual(
           plainToClass(User, {
-            id: 1,
+            id: '80000000-4000-4000-4000-120000000000',
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
             lastName: 'lastName',
@@ -191,8 +191,8 @@ describe('UsersController', () => {
         );
       });
 
-      test('UserService.findOne should be called with id number', () => {
-        expect(findOneSpy).toBeCalledWith(1);
+      test('UserService.findOne should be called with id string', () => {
+        expect(findOneSpy).toBeCalledWith('80000000-4000-4000-4000-120000000000');
       });
     });
   });
@@ -205,14 +205,14 @@ describe('UsersController', () => {
       beforeAll(async () => {
         updateUserSpy = jest.spyOn(userService, 'update').mockResolvedValue(
           plainToClass(UpdateResult, {
-            affected: 1,
+            affected: '80000000-4000-4000-4000-120000000000',
             generatedMaps: [],
             raw: [],
           }),
         );
 
         result = await userController.update(
-          1,
+          '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
@@ -231,16 +231,16 @@ describe('UsersController', () => {
       test('result should be UpdateResult', () => {
         expect(result).toStrictEqual(
           plainToClass(UpdateResult, {
-            affected: 1,
+            affected: '80000000-4000-4000-4000-120000000000',
             generatedMaps: [],
             raw: [],
           }),
         );
       });
 
-      test('UserService.update should be called with id number and UpdateUserDto', () => {
+      test('UserService.update should be called with id string and UpdateUserDto', () => {
         expect(updateUserSpy).toBeCalledWith(
-          1,
+          '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
@@ -261,12 +261,12 @@ describe('UsersController', () => {
       beforeAll(async () => {
         removeUserSpy = jest.spyOn(userService, 'remove').mockResolvedValue(
           plainToClass(DeleteResult, {
-            affected: 1,
+            affected: '80000000-4000-4000-4000-120000000000',
             raw: [],
           }),
         );
 
-        result = await userController.remove(1, headers);
+        result = await userController.remove('80000000-4000-4000-4000-120000000000', headers);
       });
 
       afterAll(() => {
@@ -276,14 +276,14 @@ describe('UsersController', () => {
       test('result should be DeleteResult', () => {
         expect(result).toStrictEqual(
           plainToClass(DeleteResult, {
-            affected: 1,
+            affected: '80000000-4000-4000-4000-120000000000',
             raw: [],
           }),
         );
       });
 
-      test('UserService.remove should be called with id number', () => {
-        expect(removeUserSpy).toBeCalledWith(1);
+      test('UserService.remove should be called with id string', () => {
+        expect(removeUserSpy).toBeCalledWith('80000000-4000-4000-4000-120000000000');
       });
     });
   });
