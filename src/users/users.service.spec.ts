@@ -15,7 +15,7 @@ import {
 } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { userData } from './users.testdata';
+import { usersModuleTestData } from './users.testdata';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
   InternalServerErrorException,
@@ -56,7 +56,7 @@ describe('【Service】UsersService', () => {
       let result: InsertResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
+        await truncateTestData(Object.keys(usersModuleTestData));
         result = await userService.create(
           plainToClass(CreateUserDto, {
             email: 'testuser01@gmail.com',
@@ -117,7 +117,7 @@ describe('【Service】UsersService', () => {
       let result: InsertResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
+        await truncateTestData(Object.keys(usersModuleTestData));
         result = await userService.create(
           plainToClass(CreateUserDto, {
             email: 'testuser01@gmail.com',
@@ -163,7 +163,7 @@ describe('【Service】UsersService', () => {
       let result: User[];
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
+        await truncateTestData(Object.keys(usersModuleTestData));
         result = await userService.findAll();
       });
 
@@ -176,9 +176,8 @@ describe('【Service】UsersService', () => {
       let result: User[];
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
-        await generateTestData(userData);
-
+        await truncateTestData(Object.keys(usersModuleTestData));
+        await generateTestData(usersModuleTestData);
         result = await userService.findAll();
       });
 
@@ -209,10 +208,12 @@ describe('【Service】UsersService', () => {
       let result: User;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
-        await generateTestData(userData);
+        await truncateTestData(Object.keys(usersModuleTestData));
+        await generateTestData(usersModuleTestData);
 
-        result = await userService.findOne('80000000-4000-4000-4000-120000000000');
+        result = await userService.findOne(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
 
       test('result should be User entity object', () => {
@@ -235,7 +236,7 @@ describe('【Service】UsersService', () => {
       let action: Promise<User>;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
+        await truncateTestData(Object.keys(usersModuleTestData));
 
         action = userService.findOne('80000000-4000-4000-4000-120000000000');
       });
@@ -258,8 +259,8 @@ describe('【Service】UsersService', () => {
       let result: UpdateResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
-        await generateTestData(userData);
+        await truncateTestData(Object.keys(usersModuleTestData));
+        await generateTestData(usersModuleTestData);
 
         result = await userService.update(
           '80000000-4000-4000-4000-120000000000',
@@ -272,7 +273,9 @@ describe('【Service】UsersService', () => {
           }),
         );
 
-        updatedUser = await userRepository.findOne('80000000-4000-4000-4000-120000000000');
+        updatedUser = await userRepository.findOne(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
 
       test('result should be UpdateResult', () => {
@@ -306,8 +309,8 @@ describe('【Service】UsersService', () => {
       let result: UpdateResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
-        await generateTestData(userData);
+        await truncateTestData(Object.keys(usersModuleTestData));
+        await generateTestData(usersModuleTestData);
 
         result = await userService.update(
           '80000000-4000-4000-4000-120000000000',
@@ -317,7 +320,9 @@ describe('【Service】UsersService', () => {
           }),
         );
 
-        updatedUser = await userRepository.findOne('80000000-4000-4000-4000-120000000000');
+        updatedUser = await userRepository.findOne(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
 
       test('result should be UpdateResult', () => {
@@ -351,8 +356,8 @@ describe('【Service】UsersService', () => {
       let result: UpdateResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
-        await generateTestData(userData);
+        await truncateTestData(Object.keys(usersModuleTestData));
+        await generateTestData(usersModuleTestData);
 
         result = await userService.update(
           '80000000-4000-4000-4000-120000000000',
@@ -362,7 +367,9 @@ describe('【Service】UsersService', () => {
           }),
         );
 
-        updatedUser = await userRepository.findOne('80000000-4000-4000-4000-120000000000');
+        updatedUser = await userRepository.findOne(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
 
       test('result should be UpdateResult', () => {
@@ -395,7 +402,7 @@ describe('【Service】UsersService', () => {
       let result: UpdateResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
+        await truncateTestData(Object.keys(usersModuleTestData));
 
         result = await userService.update(
           '80000000-4000-4000-4000-120000000000',
@@ -427,12 +434,16 @@ describe('【Service】UsersService', () => {
       let result: DeleteResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
-        await generateTestData(userData);
+        await truncateTestData(Object.keys(usersModuleTestData));
+        await generateTestData(usersModuleTestData);
 
-        result = await userService.remove('80000000-4000-4000-4000-120000000000');
+        result = await userService.remove(
+          '80000000-4000-4000-4000-120000000000',
+        );
 
-        findDeletedUserAction = userService.findOne('80000000-4000-4000-4000-120000000000');
+        findDeletedUserAction = userService.findOne(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
 
       test('result should be DeleteResult object with affected 1 record', () => {
@@ -459,9 +470,11 @@ describe('【Service】UsersService', () => {
       let result: DeleteResult;
 
       beforeAll(async () => {
-        await truncateTestData(Object.keys(userData));
+        await truncateTestData(Object.keys(usersModuleTestData));
 
-        result = await userService.remove('80000000-4000-4000-4000-120000000000');
+        result = await userService.remove(
+          '80000000-4000-4000-4000-120000000000',
+        );
       });
 
       test('result should be DeleteResult object with affected 0 record', () => {

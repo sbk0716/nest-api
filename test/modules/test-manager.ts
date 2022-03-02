@@ -1,34 +1,50 @@
 import { getConnection } from 'typeorm';
 import { User } from '../../src/users/entities/user.entity';
+import { InsertResult } from 'typeorm';
 
-const Entity = {
-  user: User,
+/**
+ * @todo
+ * If you want to test a new target entity,
+ * you need to add the target entity to this variable.
+ */
+const Entities = {
+  // table_name: EntityClassName
+  user_table: User,
 };
 
 type testDataSetType = {
-  [key: string]: {
-    [key: string]: any;
-  }[];
+  [key: string]: Array<{ [key: string]: any }>;
 };
 
 export const generateTestData = async (testDataSet: testDataSetType) => {
   const connection = await getConnection();
 
-  for (const table of Object.keys(testDataSet)) {
-    for (const data of testDataSet[table]) {
+  for (const tableName of Object.keys(testDataSet)) {
+    for (const data of testDataSet[tableName]) {
+      const targetEntity = Entities[tableName];
+      console.info('targetEntity=', targetEntity);
+      const tableMeta = connection.getMetadata(targetEntity);
+      console.info(tableMeta.tablePath);
+
       try {
-        const {
-          identifiers: [{ id }],
-        } = await connection
+        // Insert a test record
+        const testRecordInsertResult: InsertResult = await connection
           .createQueryBuilder()
           .insert()
-          .into(Entity[table])
+          .into(targetEntity)
           .values({ ...data })
           .execute();
+        // Get the ID of the inserted test record.
+        const {
+          identifiers: [{ id }],
+        } = testRecordInsertResult;
+        console.info('testRecordInsertResult=', testRecordInsertResult);
 
-        await connection
-          .getRepository(Entity[table])
-          .update(id, { id: data.id });
+        const idUpdateQuery = `UPDATE ${tableMeta.tablePath} SET id = '${data.id}' WHERE id = '${id}';`;
+        console.info('idUpdateQuery=', idUpdateQuery);
+
+        // Update the ID with the ID of the inserted test record.
+        await connection.getRepository(targetEntity).query(idUpdateQuery);
       } catch (error) {
         console.error(error);
       }
@@ -43,7 +59,19 @@ export const truncateTestData = async (
   const tableList = Array.isArray(testDataSet)
     ? testDataSet
     : Object.keys(testDataSet);
-  for (const table of tableList) {
-    await connection.getRepository(Entity[table]).clear();
+
+  for (const tableName of tableList) {
+    const targetEntity = Entities[tableName];
+    console.info('targetEntity=', targetEntity);
+    const tableMeta = connection.getMetadata(targetEntity);
+    console.info(tableMeta.tablePath);
+    const truncateQuery = `TRUNCATE ${tableMeta.tablePath} CASCADE;`;
+    console.info('truncateQuery=', truncateQuery);
+    try {
+      // Delete all rows from the target table.
+      await connection.getRepository(targetEntity).query(truncateQuery);
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
