@@ -1,8 +1,17 @@
 import { instanceToPlain } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateUserDto {
+  @ApiProperty({
+    required: false,
+    description: 'UUID',
+    default: '80000000-4000-4000-4000-120000000000',
+  })
+  @IsNotEmpty()
+  @IsUUID()
+  id: string;
+
   @ApiProperty({
     required: true,
     description: 'Email',

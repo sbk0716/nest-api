@@ -5,9 +5,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Schema } from '../../configs/database';
+import { Schema, Table } from '../../configs/database';
 
-@Entity({ schema: Schema.private })
+@Entity({ schema: Schema.private, name: Table.user })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
