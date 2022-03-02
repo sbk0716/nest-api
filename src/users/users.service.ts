@@ -33,7 +33,7 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     const userEntity = await this.usersRepository.findOne(id);
     if (!userEntity) {
       throw new NotFoundException('User not found');
@@ -41,11 +41,11 @@ export class UsersService {
     return userEntity;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  update(id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     return this.usersRepository.update(id, updateUserDto);
   }
 
-  remove(id: number): Promise<DeleteResult> {
+  remove(id: string): Promise<DeleteResult> {
     return this.usersRepository.delete(id);
   }
 }
