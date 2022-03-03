@@ -24,7 +24,7 @@ import {
 import { UpdateUserDto } from './dto/update-user.dto';
 
 describe('【Service】UsersService', () => {
-  let userService: UsersService;
+  let usersService: UsersService;
   let userRepository: Repository<User>;
   let module: TestingModule;
 
@@ -38,7 +38,7 @@ describe('【Service】UsersService', () => {
       providers: [UsersService],
     }).compile();
 
-    userService = module.get<UsersService>(UsersService);
+    usersService = module.get<UsersService>(UsersService);
     userRepository = await getConnection().getRepository(User);
   });
 
@@ -46,8 +46,8 @@ describe('【Service】UsersService', () => {
     await module.close();
   });
 
-  test('userService should be defined', () => {
-    expect(userService).toBeDefined();
+  test('usersService should be defined', () => {
+    expect(usersService).toBeDefined();
   });
 
   describe('【Method】create', () => {
@@ -57,7 +57,7 @@ describe('【Service】UsersService', () => {
 
       beforeAll(async () => {
         await truncateTestData(Object.keys(usersModuleTestData));
-        result = await userService.create(
+        result = await usersService.create(
           plainToClass(CreateUserDto, {
             email: 'testuser01@gmail.com',
             firstName: 'firstName',
@@ -99,7 +99,7 @@ describe('【Service】UsersService', () => {
     describe('Create user with undefined informations', () => {
       let action: Promise<InsertResult>;
       beforeAll(() => {
-        action = userService.create(plainToClass(CreateUserDto, {}));
+        action = usersService.create(plainToClass(CreateUserDto, {}));
       });
 
       test('action should return InternalServerErrorException error', async () => {
@@ -118,7 +118,7 @@ describe('【Service】UsersService', () => {
 
       beforeAll(async () => {
         await truncateTestData(Object.keys(usersModuleTestData));
-        result = await userService.create(
+        result = await usersService.create(
           plainToClass(CreateUserDto, {
             email: 'testuser01@gmail.com',
             firstName: '',
@@ -164,7 +164,7 @@ describe('【Service】UsersService', () => {
 
       beforeAll(async () => {
         await truncateTestData(Object.keys(usersModuleTestData));
-        result = await userService.findAll();
+        result = await usersService.findAll();
       });
 
       test('result should be empty', () => {
@@ -178,7 +178,7 @@ describe('【Service】UsersService', () => {
       beforeAll(async () => {
         await truncateTestData(Object.keys(usersModuleTestData));
         await generateTestData(usersModuleTestData);
-        result = await userService.findAll();
+        result = await usersService.findAll();
       });
 
       test('result should be array', () => {
@@ -211,7 +211,7 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(usersModuleTestData));
         await generateTestData(usersModuleTestData);
 
-        result = await userService.findOne(
+        result = await usersService.findOne(
           '80000000-4000-4000-4000-120000000000',
         );
       });
@@ -234,11 +234,21 @@ describe('【Service】UsersService', () => {
 
     describe('Get non-exist user', () => {
       let action: Promise<User>;
+      let findOneSpy: jest.SpyInstance;
 
       beforeAll(async () => {
+        findOneSpy = jest
+          .spyOn(usersService, 'findOne')
+          .mockRejectedValue(
+            new NotFoundException('User not found')
+          );
         await truncateTestData(Object.keys(usersModuleTestData));
 
-        action = userService.findOne('80000000-4000-4000-4000-120000000000');
+        action = usersService.findOne('80000000-4000-4000-4000-120000000000');
+      });
+
+      afterAll(() => {
+        findOneSpy?.mockRestore();
       });
 
       test('action should throw NotFoundException error', async () => {
@@ -262,7 +272,7 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(usersModuleTestData));
         await generateTestData(usersModuleTestData);
 
-        result = await userService.update(
+        result = await usersService.update(
           '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             email: 'testuser01@gmail.com',
@@ -312,7 +322,7 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(usersModuleTestData));
         await generateTestData(usersModuleTestData);
 
-        result = await userService.update(
+        result = await usersService.update(
           '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             firstName: 'newFirstName',
@@ -359,7 +369,7 @@ describe('【Service】UsersService', () => {
         await truncateTestData(Object.keys(usersModuleTestData));
         await generateTestData(usersModuleTestData);
 
-        result = await userService.update(
+        result = await usersService.update(
           '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             firstName: '',
@@ -404,7 +414,7 @@ describe('【Service】UsersService', () => {
       beforeAll(async () => {
         await truncateTestData(Object.keys(usersModuleTestData));
 
-        result = await userService.update(
+        result = await usersService.update(
           '80000000-4000-4000-4000-120000000000',
           plainToClass(UpdateUserDto, {
             email: 'testuser01@gmail.com',
@@ -432,18 +442,29 @@ describe('【Service】UsersService', () => {
     describe('remove exists user', () => {
       let findDeletedUserAction: Promise<User>;
       let result: DeleteResult;
+      let findOneSpy: jest.SpyInstance;
 
       beforeAll(async () => {
+        findOneSpy = jest
+          .spyOn(usersService, 'findOne')
+          .mockRejectedValue(
+            new NotFoundException('User not found')
+          );
+
         await truncateTestData(Object.keys(usersModuleTestData));
         await generateTestData(usersModuleTestData);
 
-        result = await userService.remove(
+        result = await usersService.remove(
           '80000000-4000-4000-4000-120000000000',
         );
 
-        findDeletedUserAction = userService.findOne(
+        findDeletedUserAction = usersService.findOne(
           '80000000-4000-4000-4000-120000000000',
         );
+      });
+
+      afterAll(() => {
+        findOneSpy?.mockRestore();
       });
 
       test('result should be DeleteResult object with affected 1 record', () => {
@@ -472,7 +493,7 @@ describe('【Service】UsersService', () => {
       beforeAll(async () => {
         await truncateTestData(Object.keys(usersModuleTestData));
 
-        result = await userService.remove(
+        result = await usersService.remove(
           '80000000-4000-4000-4000-120000000000',
         );
       });
