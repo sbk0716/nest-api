@@ -1416,10 +1416,10 @@ awilix@^4.2.7:
     camel-case "^4.1.2"
     glob "^7.1.6"
 
-aws-sdk@^2.1079.0:
-  version "2.1081.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1081.0.tgz#171a306fcc752b97c18f2d01a8bff24bba12447a"
-  integrity sha512-204Aqi3NmSRZDAvyzmi1usje6oCM+Q4g6PgA+vc/XQQPe1oxO95AgOXZvrpjX2QlLbA0JDItL1ufUh3nszjaqA==
+aws-sdk@^2.1132.0:
+  version "2.1132.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1132.0.tgz#0cb615e97db5a5133914ba0f2bdc8ea10eef4069"
+  integrity sha512-NPDesfTrNx8UMQ5VuosQNlFFFhswJ8cGVcVltZBXKVl1kW0BCp52XQBySSruIznaRX7vG6Ir2+nox0NdL05qBQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
